@@ -1,0 +1,329 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "label": "Hot Flashes",
+            "category": "VMS",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "id": 1,
+            "label": "Sweating",
+            "category": "VMS",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "id": 2,
+            "label": "Blood Pressure",
+            "category": "VMS",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "id": 3,
+            "label": "Tachycardia",
+            "category": "VMS",
+            "position": {
+                "x": 0,
+                "y": 0
+            }
+        },
+        {
+            "id": 4,
+            "label": "Genital Issues",
+            "category": "GSM",
+            "position": {
+                "x": 200,
+                "y": 0
+            }
+        },
+        {
+            "id": 5,
+            "label": "Urinary Issues",
+            "category": "GSM",
+            "position": {
+                "x": 200,
+                "y": 0
+            }
+        },
+        {
+            "id": 6,
+            "label": "Menstrual Issues",
+            "category": "GSM",
+            "position": {
+                "x": 200,
+                "y": 0
+            }
+        },
+        {
+            "id": 7,
+            "label": "Anxiety",
+            "category": "Mental Health",
+            "position": {
+                "x": 0,
+                "y": 200
+            }
+        },
+        {
+            "id": 8,
+            "label": "Depression",
+            "category": "Mental Health",
+            "position": {
+                "x": 0,
+                "y": 200
+            }
+        },
+        {
+            "id": 9,
+            "label": "Mood Swings",
+            "category": "Mental Health",
+            "position": {
+                "x": 0,
+                "y": 200
+            }
+        },
+        {
+            "id": 10,
+            "label": "brain fog",
+            "category": "Mental Health",
+            "position": {
+                "x": 0,
+                "y": 200
+            }
+        },
+        {
+            "id": 11,
+            "label": "Headaches",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 12,
+            "label": "Acne",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 13,
+            "label": "breast soreness",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 14,
+            "label": "hair thinning",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 15,
+            "label": "Osteoporosis",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 16,
+            "label": "Gastrointestinal",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 17,
+            "label": "Sexual Issues",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 18,
+            "label": "Fatigue",
+            "category": "Other",
+            "position": {
+                "x": 200,
+                "y": 200
+            }
+        },
+        {
+            "id": 19,
+            "label": "Classic MHT",
+            "category": "Hormone Therapy",
+            "position": {
+                "x": 400,
+                "y": 0
+            }
+        },
+        {
+            "id": 20,
+            "label": "Tibolone",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 21,
+            "label": "livial",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 22,
+            "label": "TSEC",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 23,
+            "label": "Tissue-Selective Estrogen Complex",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 24,
+            "label": "Duavee",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 25,
+            "label": "Ospemifene",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 26,
+            "label": "Lasofoxifene",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 27,
+            "label": "testosterone",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 28,
+            "label": "CE/BZA",
+            "category": "Novel hormone treatments",
+            "position": {
+                "x": 400,
+                "y": 100
+            }
+        },
+        {
+            "id": 29,
+            "label": "Fezolinetan",
+            "category": "Non-Hormonal Treatments",
+            "position": {
+                "x": 400,
+                "y": 200
+            }
+        },
+        {
+            "id": 30,
+            "label": "Herbal",
+            "category": "Non-Hormonal Treatments",
+            "position": {
+                "x": 400,
+                "y": 200
+            }
+        },
+        {
+            "id": 31,
+            "label": "Lifestyle Modifications",
+            "category": "Lifestyle",
+            "position": {
+                "x": 400,
+                "y": 300
+            }
+        },
+        {
+            "id": 32,
+            "label": "Fezolinetan",
+            "category": "Other Prescription Drugs",
+            "position": {
+                "x": 400,
+                "y": 400
+            }
+        },
+        {
+            "id": 33,
+            "label": "Clonidine",
+            "category": "Other Prescription Drugs",
+            "position": {
+                "x": 400,
+                "y": 400
+            }
+        },
+        {
+            "id": 34,
+            "label": "Gabapentin",
+            "category": "Other Prescription Drugs",
+            "position": {
+                "x": 400,
+                "y": 400
+            }
+        },
+        {
+            "id": 35,
+            "label": "Antidepressants",
+            "category": "Other Prescription Drugs",
+            "position": {
+                "x": 400,
+                "y": 400
+            }
+        }
+    ],
+    "links": []
+}

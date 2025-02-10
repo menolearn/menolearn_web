@@ -16,13 +16,39 @@ import {
   useEdgesState,
   useReactFlow,
   useNodesInitialized,
+  MiniMap,
+  Background,
+  applyEdgeChanges,
+  applyNodeChanges
 } from '@xyflow/react';
  
-import { initialNodes, initialEdges } from './nodes-edges.js';
+import { 
+  initialNodes, 
+  initialEdges,  
+  reliefNodes,
+  reliefEdges
+} from './nodes-edges.js';
 import { collide } from './collide.js';
  
 import '@xyflow/react/dist/style.css';
 
+import SourceNode from './SourceNode.jsx';
+
+const nodeTypes = { source: SourceNode };
+
+const nodeEdgeArray = [[initialNodes, initialEdges], [reliefNodes, reliefEdges]];
+
+const currPair = nodeEdgeArray[0]
+
+const currNodes = currPair[0];
+const currEdges = currPair[1];
+
+// const currNodes = reliefNodes;
+// const currEdges = reliefEdges;
+
+const nodeColor = (node) => {
+    return node.style.backgroundColor;
+};
  
 const simulation = forceSimulation()
   .force('charge', forceManyBody().strength(-1000))
@@ -128,23 +154,33 @@ const useLayoutedElements = () => {
 };
  
 const LayoutFlow = () => {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, , onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, , onNodesChange] = useNodesState(currNodes);
+  const [edges, , onEdgesChange] = useEdgesState(currEdges);
   const [initialized, { toggle, isRunning }, dragEvents] =
     useLayoutedElements();
 
   const [running, setRunning] = useState(false)
 
+  const handleNodeClick = (event, node) => {
+    console.log('Node clicked:', node.id);
+    // Perform your desired action here
+  };
+
   return (
+    <div style={{ height: '100%' }}>
     <ReactFlow
       nodes={nodes}
       edges={edges}
+      nodeTypes={nodeTypes}
       onNodeDragStart={dragEvents.start}
       onNodeDrag={dragEvents.drag}
       onNodeDragStop={dragEvents.stop}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onNodeClick={handleNodeClick}
     >
+      <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
+      <Background color="#ccc" variant={'dots'} />
       <Panel>
         {initialized && (
           <button onClick={() => {
@@ -156,6 +192,7 @@ const LayoutFlow = () => {
         )}
       </Panel>
     </ReactFlow>
+    </div>
   );
 };
  
