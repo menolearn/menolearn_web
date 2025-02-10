@@ -45,7 +45,7 @@ function SourceNode({ id, data, isConnectable }) {
  
   return (
     <div>
-      <div>{data.label}</div>
+      <div><strong>{data.label}</strong></div>
       {handles}
     </div>
     // <div className="source-node">
