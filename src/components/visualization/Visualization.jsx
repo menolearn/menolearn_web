@@ -19,15 +19,23 @@ import {
   MiniMap,
   Background,
   applyEdgeChanges,
-  applyNodeChanges
+  applyNodeChanges,
+  useNavigate
 } from '@xyflow/react';
  
 import { 
   initialNodes, 
   initialEdges,  
   reliefNodes,
-  reliefEdges
+  reliefEdges,
+  supportNodes,
+  supportEdges,
+  pharmNodes,
+  pharmEdges,
+  altNodes,
+  altEdges
 } from './nodes-edges.js';
+
 import { collide } from './collide.js';
  
 import '@xyflow/react/dist/style.css';
@@ -36,12 +44,20 @@ import SourceNode from './SourceNode.jsx';
 
 const nodeTypes = { source: SourceNode };
 
-const nodeEdgeArray = [[initialNodes, initialEdges], [reliefNodes, reliefEdges]];
+const nodeEdgeArray = [
+  [initialNodes, initialEdges], 
+  [reliefNodes, reliefEdges], 
+  [supportNodes, supportEdges],
+  [pharmNodes, pharmEdges],
+  [altNodes, altEdges]
+];
 
-const currPair = nodeEdgeArray[0]
+var currIndex = 4
 
-const currNodes = currPair[0];
-const currEdges = currPair[1];
+var currPair = nodeEdgeArray[currIndex];
+
+var currNodes = currPair[0];
+var currEdges = currPair[1];
 
 // const currNodes = reliefNodes;
 // const currEdges = reliefEdges;
@@ -49,6 +65,10 @@ const currEdges = currPair[1];
 const nodeColor = (node) => {
     return node.style.backgroundColor;
 };
+
+// const onNodeClick = (node, currIndex) => {
+//   currIndex = 2;
+// };
  
 const simulation = forceSimulation()
   .force('charge', forceManyBody().strength(-1000))
@@ -161,9 +181,19 @@ const LayoutFlow = () => {
 
   const [running, setRunning] = useState(false)
 
-  const handleNodeClick = (event, node) => {
+  const handleNodeClick = (event, node, currIndex) => {
     console.log('Node clicked:', node.id);
     // Perform your desired action here
+    setNodes((prevNodes) =>
+      prevNodes.map((n) =>
+        n.id === node.id ? { ...n, data: { ...n.data, clicked: true } } : n
+      )
+    );
+
+    setEdges((prevEdges) => {
+      // Example: Add a new edge connected to the clicked node
+      return [...prevEdges, { id: `e-${node.id}-new`, source: node.id, target: 'some-other-node' }];
+    });
   };
 
   return (
@@ -179,8 +209,8 @@ const LayoutFlow = () => {
       onEdgesChange={onEdgesChange}
       onNodeClick={handleNodeClick}
     >
-      <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable />
-      <Background color="#ccc" variant={'dots'} />
+      {/* <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable /> */}
+      {/* <Background color="#ccc" variant={'dots'} /> */}
       <Panel>
         {initialized && (
           <button onClick={() => {
