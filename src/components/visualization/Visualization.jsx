@@ -34,13 +34,13 @@ import {
   pharmEdges,
   altNodes,
   altEdges
-} from './nodes-edges.js';
+} from './nodes-edges';
 
 import { collide } from './collide.js';
  
 import '@xyflow/react/dist/style.css';
 
-import SourceNode from './SourceNode.jsx';
+import SourceNode from './SourceNode';
 
 const nodeTypes = { source: SourceNode };
 
@@ -190,14 +190,13 @@ const LayoutFlow = () => {
       )
     );
 
-    setEdges((prevEdges) => {
-      // Example: Add a new edge connected to the clicked node
-      return [...prevEdges, { id: `e-${node.id}-new`, source: node.id, target: 'some-other-node' }];
-    });
+    // setEdges((prevEdges) => {
+    //   // Example: Add a new edge connected to the clicked node
+    //   return [...prevEdges, { id: `e-${node.id}-new`, source: node.id, target: 'some-other-node' }];
+    // });
   };
 
   return (
-    <div style={{ height: '100%' }}>
     <ReactFlow
       nodes={nodes}
       edges={edges}
@@ -222,7 +221,6 @@ const LayoutFlow = () => {
         )}
       </Panel>
     </ReactFlow>
-    </div>
   );
 };
  

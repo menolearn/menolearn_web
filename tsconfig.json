@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/visualization/collide.js", "src/components/visualization/Visualization.tsx", "src/components/visualization/nodes-edges.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/visualization/collide.js", "src/components/visualization/Visualization.tsx", "src/components/visualization/nodes-edges.ts"],
   "exclude": ["node_modules"]
 }
