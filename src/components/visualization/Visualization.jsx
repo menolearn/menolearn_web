@@ -52,12 +52,12 @@ const nodeEdgeArray = [
   [altNodes, altEdges]
 ];
 
-var currIndex = 4
+let currIndex = 0
 
-var currPair = nodeEdgeArray[currIndex];
+let currPair = nodeEdgeArray[currIndex];
 
-var currNodes = currPair[0];
-var currEdges = currPair[1];
+let currNodes = currPair[0];
+let currEdges = currPair[1];
 
 // const currNodes = reliefNodes;
 // const currEdges = reliefEdges;
@@ -174,8 +174,8 @@ const useLayoutedElements = () => {
 };
  
 const LayoutFlow = () => {
-  const [nodes, , onNodesChange] = useNodesState(currNodes);
-  const [edges, , onEdgesChange] = useEdgesState(currEdges);
+  const [nodes, setNodes] = useState(currNodes);
+  const [edges, setEdges] = useState(currEdges);
   const [initialized, { toggle, isRunning }, dragEvents] =
     useLayoutedElements();
 
@@ -184,16 +184,12 @@ const LayoutFlow = () => {
   const handleNodeClick = (event, node, currIndex) => {
     console.log('Node clicked:', node.id);
     // Perform your desired action here
-    setNodes((prevNodes) =>
-      prevNodes.map((n) =>
-        n.id === node.id ? { ...n, data: { ...n.data, clicked: true } } : n
-      )
-    );
 
-    // setEdges((prevEdges) => {
-    //   // Example: Add a new edge connected to the clicked node
-    //   return [...prevEdges, { id: `e-${node.id}-new`, source: node.id, target: 'some-other-node' }];
-    // });
+    // is this close??
+    let newPair = nodeEdgeArray[node.data.targetIndex]
+    setNodes(newPair[0]);
+    setEdges(newPair[1]);
+  
   };
 
   return (
@@ -204,8 +200,8 @@ const LayoutFlow = () => {
       onNodeDragStart={dragEvents.start}
       onNodeDrag={dragEvents.drag}
       onNodeDragStop={dragEvents.stop}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
+      // onNodesChange={onNodesChange}
+      // onEdgesChange={onEdgesChange}
       onNodeClick={handleNodeClick}
     >
       {/* <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable /> */}

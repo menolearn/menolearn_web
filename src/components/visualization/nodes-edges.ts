@@ -13,13 +13,13 @@ export const initialNodes = [
   },
   {
     id: "1a",
-    data: { label: "Need Relief?" },
+    data: { label: "Need Relief?", targetIndex: 1},
     position: { x: 0, y: 300 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
   {
     id: "1b",
-    data: { label: "Need Support?" },
+    data: { label: "Need Support?", targetIndex: 2 },
     position: { x: 400, y: 500 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
@@ -78,19 +78,19 @@ export const reliefNodes = [
   {
     id: "2",
     type: "source",
-    data: { label: "Relief", numHandles: 2 },
+    data: { label: "Relief", numHandles: 2, targetIndex: 0},
     position: { x: 400, y: 300 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
   {
     id: "2a",
-    data: { label: "Pharmacological" },
+    data: { label: "Pharmacological", targetIndex: 3 },
     position: { x: 0, y: 300 },
     style: { backgroundColor: "#80ebf1", color: "black" },
   },
   {
     id: "2b",
-    data: { label: "Alternative" },
+    data: { label: "Alternative", targetIndex: 4 },
     position: { x: 400, y: 500 },
     style: { backgroundColor: "#80ebf1", color: "black" },
   },
@@ -121,7 +121,7 @@ export const supportNodes = [
   {
     id: "3",
     type: "source",
-    data: { label: "Support For:", numHandles: 5 },
+    data: { label: "Support For:", numHandles: 5, targetIndex: 0 },
     position: { x: 400, y: 300 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
@@ -206,7 +206,7 @@ export const pharmNodes = [
   {
     id: "4",
     type: "source",
-    data: { label: "Pharmacological Treatments", numHandles: 5 },
+    data: { label: "Pharmacological Treatments", numHandles: 5, targetIndex: 1 },
     position: { x: 400, y: 300 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
@@ -277,7 +277,7 @@ export const altNodes = [
   {
     id: "5",
     type: "source",
-    data: { label: "Alternative Treatments", numHandles: 3 },
+    data: { label: "Alternative Treatments", numHandles: 3, targetIndex: 1 },
     position: { x: 400, y: 300 },
     style: { backgroundColor: "#8b9df5", color: "black" },
   },
