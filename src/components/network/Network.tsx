@@ -12,6 +12,8 @@ import {
   useEdgesState,
   NodeMouseHandler,
   ReactFlowProvider,
+  useReactFlow,
+  BackgroundVariant,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
@@ -36,6 +38,7 @@ const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
 const nodeTypes = { network: NetworkNode }
 
 function Network() {
+  const { setCenter } = useReactFlow()
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NetworkNodeType>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
@@ -43,6 +46,9 @@ function Network() {
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
       console.log("node clicked")
+
+      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
+
       const existingNodeIds = new Set(nodes.map((n) => n.id))
 
       const newNodes = allNodes.filter(
@@ -60,17 +66,17 @@ function Network() {
   )
 
   return (
-    <ReactFlowProvider>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        nodeTypes={nodeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeClick={onNodeClick}
-        fitView
-      />
-    </ReactFlowProvider>
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      nodeTypes={nodeTypes}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onNodeClick={onNodeClick}
+      fitView
+    >
+      <Background color="#808080" variant={BackgroundVariant.Dots} />
+    </ReactFlow>
   )
 }
 export default Network

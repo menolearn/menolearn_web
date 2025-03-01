@@ -9,7 +9,7 @@ export enum NodeCategory {
   initial = "init",
   relief = "relief",
   support = "support",
-  pharmacological = "pharm",
+  pharma = "pharm",
   alternative = "alt",
   hrt = "hrt",
 }
@@ -71,7 +71,7 @@ export const allNodes: NetworkNodeType[] = [
     type: "network",
     data: {
       label: "HRT/MHT",
-      category: NodeCategory.pharmacological,
+      category: NodeCategory.pharma,
     },
     position: { x: 0, y: 300 },
     connectsTo: ["4a", "4b", "4c"],
@@ -81,7 +81,7 @@ export const allNodes: NetworkNodeType[] = [
     type: "network",
     data: {
       label: "Other Novel Hormonal",
-      category: NodeCategory.pharmacological,
+      category: NodeCategory.pharma,
     },
     position: { x: 400, y: 500 },
     connectsTo: [],
@@ -89,7 +89,7 @@ export const allNodes: NetworkNodeType[] = [
   {
     id: "3c",
     type: "network",
-    data: { label: "Non-Hormonal", category: NodeCategory.pharmacological },
+    data: { label: "Non-Hormonal", category: NodeCategory.pharma },
     position: { x: 700, y: 300 },
     connectsTo: [],
   },
