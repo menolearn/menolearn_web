@@ -3,32 +3,116 @@ import {
   Edge,
   ReactFlow,
   Background,
-  Controls,
-  applyNodeChanges,
-  applyEdgeChanges,
-  EdgeChange,
-  NodeChange,
   useNodesState,
   useEdgesState,
   NodeMouseHandler,
-  ReactFlowProvider,
   useReactFlow,
   BackgroundVariant,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
-import { allNodes, NetworkNodeType, NodeCategory } from "@/data/nodes"
+import { allNodes } from "@/data/nodes"
+import { HandleObject, NetworkNodeType, NodeCategory } from "@/types"
 import { useCallback, useState } from "react"
 import NetworkNode from "./NetworkNode"
 
-const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] =>
-  nodes.flatMap((node) =>
-    node.connectsTo.map((targetId) => ({
-      id: `e${node.id}-${targetId}`,
-      source: node.id,
-      target: targetId,
-    }))
-  )
+const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
+  return nodes.flatMap((node) => {
+    // Find the closest handles for each connection
+    return node.connectsTo
+      .map((targetId) => {
+        const targetNode = nodes.find((n) => n.id === targetId)
+        if (!targetNode) return null
+
+        const { closestSourceHandle, closestTargetHandle } = getClosestHandles(
+          node,
+          targetNode
+        )
+
+        if (closestSourceHandle && closestTargetHandle) {
+          return {
+            id: `e${node.id}-${targetId}`,
+            source: node.id,
+            target: targetId,
+            sourceHandle: closestSourceHandle.id,
+            targetHandle: closestTargetHandle.id,
+          }
+        }
+
+        return null
+      })
+      .filter(Boolean) as Edge[]
+  })
+}
+
+const getClosestHandles = (
+  sourceNode: NetworkNodeType,
+  targetNode: NetworkNodeType
+): {
+  closestSourceHandle: HandleObject | null
+  closestTargetHandle: HandleObject | null
+} => {
+  const sourceHandles: HandleObject[] = [
+    {
+      id: `t-${sourceNode.id}`,
+      position: { x: sourceNode.position.x, y: sourceNode.position.y },
+    },
+    {
+      id: `l-${sourceNode.id}`,
+      position: { x: sourceNode.position.x - 100, y: sourceNode.position.y },
+    },
+    {
+      id: `b-${sourceNode.id}`,
+      position: { x: sourceNode.position.x, y: sourceNode.position.y + 50 },
+    },
+    {
+      id: `r-${sourceNode.id}`,
+      position: { x: sourceNode.position.x + 100, y: sourceNode.position.y },
+    },
+  ]
+
+  const targetHandles: HandleObject[] = [
+    {
+      id: `t-${targetNode.id}`,
+      position: { x: targetNode.position.x, y: targetNode.position.y },
+    },
+    {
+      id: `l-${targetNode.id}`,
+      position: { x: targetNode.position.x - 100, y: targetNode.position.y },
+    },
+    {
+      id: `b-${targetNode.id}`,
+      position: { x: targetNode.position.x, y: targetNode.position.y + 50 },
+    },
+    {
+      id: `r-${targetNode.id}`,
+      position: { x: targetNode.position.x + 100, y: targetNode.position.y },
+    },
+  ]
+
+  let closestDistance = Infinity
+  let closestSourceHandle: HandleObject | null = null
+  let closestTargetHandle: HandleObject | null = null
+
+  // Loop through source and target handles to find the closest pair
+  sourceHandles.forEach((sourceHandle) => {
+    targetHandles.forEach((targetHandle) => {
+      const distance = Math.sqrt(
+        Math.pow(sourceHandle.position.x - targetHandle.position.x, 2) +
+          Math.pow(sourceHandle.position.y - targetHandle.position.y, 2)
+      )
+
+      if (distance < closestDistance) {
+        closestDistance = distance
+        closestSourceHandle = sourceHandle
+        closestTargetHandle = targetHandle
+      }
+    })
+  })
+  console.log(closestSourceHandle, closestTargetHandle)
+
+  return { closestSourceHandle, closestTargetHandle }
+}
 
 const initialNodes: NetworkNodeType[] = allNodes.filter(
   (node) => node.data.category == NodeCategory.initial
