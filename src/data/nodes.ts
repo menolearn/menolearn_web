@@ -1,131 +1,123 @@
-// export interface SourceNodeData
-//   extends Record<string, string | number | string[]> {
-//   label: string
-//   numHandles: number
-//   showNodes: string[]
-// }
+import { Node } from "@xyflow/react"
 
-export const initialNodes = [
+export type NetworkNodeType = Node & {
+  data: { label: string; category: NodeCategory }
+  connectsTo: string[]
+}
+
+export enum NodeCategory {
+  initial = "init",
+  relief = "relief",
+  support = "support",
+  pharmacological = "pharm",
+  alternative = "alt",
+  hrt = "hrt",
+}
+
+export const allNodes: NetworkNodeType[] = [
   {
     id: "1",
     type: "network",
-    data: { label: "What Is Menopause?", numHandles: 5 },
+    data: { label: "What Is Menopause?", category: NodeCategory.initial },
     position: { x: 400, y: 300 },
-    connectTo: ["1a", "1b", "1c", "1d"],
-    style: { backgroundColor: "#80ebf1", color: "black" },
+    connectsTo: ["1a", "1b", "1c", "1d"],
   },
   {
     id: "1a",
     type: "network",
-    data: { label: "Need Relief?" },
+    data: { label: "Need Relief?", category: NodeCategory.initial },
     position: { x: 100, y: 300 },
-    showNodes: [],
-    style: { backgroundColor: "#8b9df5", color: "black" },
+    connectsTo: ["2a", "2b"],
   },
   {
     id: "1b",
     type: "network",
-    data: { label: "Need Support?" },
+    data: { label: "Need Support?", category: NodeCategory.initial },
     position: { x: 400, y: 500 },
-    style: { backgroundColor: "#8b9df5", color: "black" },
+    connectsTo: [],
   },
   {
     id: "1c",
     type: "network",
-    data: { label: "Got Questions?" },
+    data: { label: "Got Questions?", category: NodeCategory.initial },
     position: { x: 700, y: 300 },
-    style: { backgroundColor: "#8b9df5", color: "black" },
+    connectsTo: [],
   },
   {
     id: "1d",
     type: "network",
-    data: { label: "Take A Quiz" },
+    data: { label: "Take A Quiz", category: NodeCategory.initial },
     position: { x: 400, y: 100 },
-    style: { backgroundColor: "#8b9df5", color: "black" },
+    connectsTo: [],
   },
-]
-
-export const initialEdges = [
-  {
-    id: "e11a",
-    source: "1",
-    target: "1a",
-    sourceHandle: "l1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-  {
-    id: "e11b",
-    source: "1",
-    target: "1b",
-    sourceHandle: "b1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-  {
-    id: "e11c",
-    source: "1",
-    target: "1c",
-    sourceHandle: "r1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-  {
-    id: "e11d",
-    source: "1",
-    target: "1d",
-    sourceHandle: "t1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-]
-
-//==============================================================================================================================================
-
-export const reliefNodes = [
-  {
-    id: "2",
-    type: "source",
-    data: { label: "Relief", numHandles: 2 },
-    position: { x: 400, y: 300 },
-    style: { backgroundColor: "#8b9df5", color: "black" },
-  },
+  // Relief nodes
   {
     id: "2a",
-    data: { label: "Pharmacological" },
+    type: "network",
+    data: { label: "Pharmacological", category: NodeCategory.relief },
     position: { x: 0, y: 300 },
-    style: { backgroundColor: "#80ebf1", color: "black" },
+    connectsTo: ["3a", "3b", "3c"],
   },
   {
     id: "2b",
-    data: { label: "Alternative" },
+    type: "network",
+    data: { label: "Alternative", category: NodeCategory.relief },
     position: { x: 400, y: 500 },
-    style: { backgroundColor: "#80ebf1", color: "black" },
+    connectsTo: [],
+  },
+  // Pharmacological nodes
+  {
+    id: "3a",
+    type: "network",
+    data: {
+      label: "HRT/MHT",
+      category: NodeCategory.pharmacological,
+    },
+    position: { x: 0, y: 300 },
+    connectsTo: ["4a", "4b", "4c"],
+  },
+  {
+    id: "3b",
+    type: "network",
+    data: {
+      label: "Other Novel Hormonal",
+      category: NodeCategory.pharmacological,
+    },
+    position: { x: 400, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "3c",
+    type: "network",
+    data: { label: "Non-Hormonal", category: NodeCategory.pharmacological },
+    position: { x: 700, y: 300 },
+    connectsTo: [],
+  },
+  // HRT/MHT
+  {
+    id: "4a",
+    type: "network",
+    data: { label: "EPT", category: NodeCategory.hrt },
+    position: { x: 0, y: 300 },
+    connectsTo: [],
+  },
+  {
+    id: "4b",
+    type: "network",
+    data: { label: "ET", category: NodeCategory.hrt },
+    position: { x: 400, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "4c",
+    type: "network",
+    data: { label: "Progesterone", category: NodeCategory.hrt },
+    position: { x: 700, y: 300 },
+    connectsTo: [],
   },
 ]
 
-export const reliefEdges = [
-  {
-    id: "e22a",
-    source: "2",
-    target: "2a",
-    sourceHandle: "l1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-  {
-    id: "e22b",
-    source: "2",
-    target: "2b",
-    sourceHandle: "b1",
-    style: { strokeWidth: 3 },
-    animated: false,
-  },
-]
-
-//==============================================================================================================================================
-
-export const supportNodes = [
+const supportNodes = [
   {
     id: "3",
     type: "source",
@@ -165,7 +157,7 @@ export const supportNodes = [
   },
 ]
 
-export const supportEdges = [
+const supportEdges = [
   {
     id: "e33a",
     source: "3",

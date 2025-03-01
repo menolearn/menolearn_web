@@ -1,5 +1,6 @@
 "use client"
 import {
+  Edge,
   ReactFlow,
   Background,
   Controls,
@@ -7,66 +8,69 @@ import {
   applyEdgeChanges,
   EdgeChange,
   NodeChange,
+  useNodesState,
+  useEdgesState,
+  NodeMouseHandler,
+  ReactFlowProvider,
 } from "@xyflow/react"
 import "@xyflow/react/dist/style.css"
 
-import {
-  initialNodes,
-  initialEdges,
-  reliefNodes,
-  reliefEdges,
-  supportNodes,
-  supportEdges,
-  pharmNodes,
-  pharmEdges,
-  altNodes,
-  altEdges,
-} from "../../data/nodes-edges"
+import { allNodes, NetworkNodeType, NodeCategory } from "@/data/nodes"
 import { useCallback, useState } from "react"
-import SourceNode from "../visualization/SourceNode"
+import NetworkNode from "./NetworkNode"
 
-const nodeTypes = { source: SourceNode }
+const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] =>
+  nodes.flatMap((node) =>
+    node.connectsTo.map((targetId) => ({
+      id: `e${node.id}-${targetId}`,
+      source: node.id,
+      target: targetId,
+    }))
+  )
+
+const initialNodes: NetworkNodeType[] = allNodes.filter(
+  (node) => node.data.category == NodeCategory.initial
+)
+const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
+
+const nodeTypes = { network: NetworkNode }
 
 function Network() {
-  const [nodes, setNodes] = useState(initialNodes)
-  const [edges, setEdges] = useState(initialEdges)
+  const [nodes, setNodes, onNodesChange] =
+    useNodesState<NetworkNodeType>(initialNodes)
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
 
-  const onNodesChange = useCallback(
-    (changes: NodeChange<any>[]) =>
-      setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  )
-  const onEdgesChange = useCallback(
-    (
-      changes: EdgeChange<{
-        id: string
-        source: string
-        target: string
-        sourceHandle: string
-        style: {
-          strokeWidth: number
-        }
-        animated: boolean
-      }>[]
-    ) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
+  const onNodeClick: NodeMouseHandler = useCallback(
+    (_, node) => {
+      console.log("node clicked")
+      const existingNodeIds = new Set(nodes.map((n) => n.id))
+
+      const newNodes = allNodes.filter(
+        (n) =>
+          (node as NetworkNodeType).connectsTo.includes(n.id) &&
+          !existingNodeIds.has(n.id)
+      )
+
+      if (newNodes.length == 0) return
+
+      setNodes((nds) => [...nds, ...newNodes])
+      setEdges((eds) => [...eds, ...getEdgesFromNodes(newNodes)])
+    },
+    [nodes, setNodes, setEdges]
   )
 
   return (
-    <div style={{ height: "100%" }}>
+    <ReactFlowProvider>
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        fitView
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
-    </div>
+        onNodeClick={onNodeClick}
+        fitView
+      />
+    </ReactFlowProvider>
   )
 }
-
 export default Network
