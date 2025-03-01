@@ -144,7 +144,10 @@ function Network() {
       if (newNodes.length == 0) return
 
       setNodes((nds) => [...nds, ...newNodes])
-      setEdges((eds) => [...eds, ...getEdgesFromNodes(newNodes)])
+      setEdges((eds) => [
+        ...eds,
+        ...getEdgesFromNodes([...newNodes, node as NetworkNodeType]),
+      ])
     },
     [nodes, setNodes, setEdges]
   )

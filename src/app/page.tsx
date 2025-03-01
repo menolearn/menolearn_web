@@ -1,5 +1,4 @@
 import Network from "@/components/network/Network"
-import Visualization from "@/components/visualization/Visualization"
 import { ReactFlowProvider } from "@xyflow/react"
 
 export default function Home() {
