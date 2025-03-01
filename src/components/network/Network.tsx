@@ -109,7 +109,6 @@ const getClosestHandles = (
       }
     })
   })
-  console.log(closestSourceHandle, closestTargetHandle)
 
   return { closestSourceHandle, closestTargetHandle }
 }
