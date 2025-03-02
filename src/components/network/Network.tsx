@@ -8,20 +8,36 @@ import {
   NodeMouseHandler,
   useReactFlow,
   BackgroundVariant,
+  useNodesInitialized,
+  Panel,
 } from "@xyflow/react"
+import {
+  forceSimulation,
+  forceLink,
+  forceManyBody,
+  forceX,
+  forceY,
+} from "d3-force"
+
 import "@xyflow/react/dist/style.css"
 
 import { allNodes } from "@/data/nodes"
-import { HandleObject, NetworkNodeType, NodeCategory } from "@/types"
-import { useCallback, useState } from "react"
+import {
+  DragEvents,
+  HandleObject,
+  NetworkNodeType,
+  NodeCategory,
+  UseLayoutedElementsReturn,
+} from "@/types"
+import { useCallback, useMemo, useRef, useState } from "react"
 import NetworkNode from "./NetworkNode"
+import collide from "../visualization/collide"
 
 const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
   return nodes.flatMap((node) => {
-    // Find the closest handles for each connection
     return node.connectsTo
       .map((targetId) => {
-        const targetNode = nodes.find((n) => n.id === targetId)
+        const targetNode = nodes.find((n) => n.id == targetId)
         if (!targetNode) return null
 
         const { closestSourceHandle, closestTargetHandle } = getClosestHandles(
@@ -57,18 +73,18 @@ const getClosestHandles = (
       id: `t-${sourceNode.id}`,
       position: { x: sourceNode.position.x, y: sourceNode.position.y },
     },
-    {
-      id: `l-${sourceNode.id}`,
-      position: { x: sourceNode.position.x - 100, y: sourceNode.position.y },
-    },
+    // {
+    //   id: `l-${sourceNode.id}`,
+    //   position: { x: sourceNode.position.x - 100, y: sourceNode.position.y },
+    // },
     {
       id: `b-${sourceNode.id}`,
       position: { x: sourceNode.position.x, y: sourceNode.position.y + 50 },
     },
-    {
-      id: `r-${sourceNode.id}`,
-      position: { x: sourceNode.position.x + 100, y: sourceNode.position.y },
-    },
+    // {
+    //   id: `r-${sourceNode.id}`,
+    //   position: { x: sourceNode.position.x + 100, y: sourceNode.position.y },
+    // },
   ]
 
   const targetHandles: HandleObject[] = [
@@ -76,18 +92,18 @@ const getClosestHandles = (
       id: `t-${targetNode.id}`,
       position: { x: targetNode.position.x, y: targetNode.position.y },
     },
-    {
-      id: `l-${targetNode.id}`,
-      position: { x: targetNode.position.x - 100, y: targetNode.position.y },
-    },
+    // {
+    //   id: `l-${targetNode.id}`,
+    //   position: { x: targetNode.position.x - 100, y: targetNode.position.y },
+    // },
     {
       id: `b-${targetNode.id}`,
       position: { x: targetNode.position.x, y: targetNode.position.y + 50 },
     },
-    {
-      id: `r-${targetNode.id}`,
-      position: { x: targetNode.position.x + 100, y: targetNode.position.y },
-    },
+    // {
+    //   id: `r-${targetNode.id}`,
+    //   position: { x: targetNode.position.x + 100, y: targetNode.position.y },
+    // },
   ]
 
   let closestDistance = Infinity
@@ -113,40 +129,166 @@ const getClosestHandles = (
   return { closestSourceHandle, closestTargetHandle }
 }
 
+const simulation = forceSimulation()
+  .force("charge", forceManyBody().strength(-1000))
+  .force("x", forceX().x(0).strength(0.05))
+  .force("y", forceY().y(0).strength(0.05))
+  .force("collide", collide())
+  .alphaTarget(0.05)
+  .stop()
+
+const useLayoutedElements = (): UseLayoutedElementsReturn => {
+  const { getNodes, setNodes, getEdges, fitView } = useReactFlow()
+  const initialized = useNodesInitialized()
+
+  // You can use these events if you want the flow to remain interactive while
+  // the simulation is running. The simulation is typically responsible for setting
+  // the position of nodes, but if we have a reference to the node being dragged,
+  // we use that position instead.
+  const draggingNodeRef = useRef<NetworkNodeType | null>(null)
+  const dragEvents: DragEvents = useMemo(
+    () => ({
+      start: (_event: React.MouseEvent, node: NetworkNodeType) => {
+        draggingNodeRef.current = node
+      },
+
+      drag: (_event: React.MouseEvent, node: NetworkNodeType) => {
+        draggingNodeRef.current = node
+      },
+      stop: (_event: React.MouseEvent) => {
+        draggingNodeRef.current = null
+      },
+    }),
+    []
+  )
+
+  let nodes: NetworkNodeType[] = (getNodes() as NetworkNodeType[]).map(
+    (node) => ({
+      ...node,
+      x: node.position.x,
+      y: node.position.y,
+    })
+  )
+  let edges = getEdges()
+
+  return useMemo(() => {
+    let running = false
+
+    // If React Flow hasn't initialized our nodes with a width and height yet, or
+    // if there are no nodes in the flow, then we can't run the simulation!
+    if (!initialized || nodes.length === 0) return [false, null, dragEvents]
+
+    simulation.nodes(nodes).force(
+      "link",
+      forceLink(edges)
+        .id((d: any) => d.id)
+        .strength(0.05)
+        .distance(100)
+    )
+
+    // The tick function is called every animation frame while the simulation is
+    // running and progresses the simulation one step forward each time.
+    const tick = () => {
+      ;(getNodes() as NetworkNodeType[]).forEach((nd, i) => {
+        const dragging = draggingNodeRef.current?.id == nd.id
+
+        // Setting the fx/fy properties of a node tells the simulation to "fix"
+        // the node at that positionx and ignore any forces that would normally
+        // cause it to move.
+        if (dragging && draggingNodeRef.current) {
+          console.log("dragged")
+          nodes[i].fx = draggingNodeRef.current.position.x
+          nodes[i].fy = draggingNodeRef.current.position.y
+        } else {
+          console.log(nodes) // TODO: Fix nodes not being updated after adding nodes
+          delete nodes[i].fx
+          delete nodes[i].fy
+        }
+      })
+
+      simulation.tick()
+      setNodes(
+        nodes.map((node) => {
+          return {
+            ...node,
+            position: { x: node.fx ?? node.x!, y: node.fy ?? node.y! },
+            x: node.fx ?? node.x!,
+            y: node.fy ?? node.y!,
+          }
+        })
+      )
+
+      window.requestAnimationFrame(() => {
+        // Give React and React Flow a chance to update and render the new node
+        // positions before we fit the viewport to the new layout.
+        fitView()
+
+        // If the simulation hasn't been stopped, schedule another tick.
+        if (running) tick()
+      })
+    }
+
+    const toggle = () => {
+      if (!running) {
+        getNodes().forEach((node, index) => {
+          let simNode = nodes[index]
+          Object.assign(simNode, node)
+          simNode.x = node.position.x
+          simNode.y = node.position.y
+        })
+      }
+      running = !running
+      running && window.requestAnimationFrame(tick)
+
+      console.log("Running ", running)
+    }
+
+    const isRunning = () => running
+
+    return [true, { toggle, isRunning }, dragEvents]
+  }, [initialized, dragEvents, getNodes, getEdges, setNodes, fitView])
+}
+
 const initialNodes: NetworkNodeType[] = allNodes.filter(
   (node) => node.data.category == NodeCategory.initial
 )
+
 const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
 
 const nodeTypes = { network: NetworkNode }
 
 function Network() {
-  const { setCenter } = useReactFlow()
+  const { setCenter } = useReactFlow<NetworkNodeType, Edge>()
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NetworkNodeType>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
 
+  const [initialized, toggleRunning, dragEvents] = useLayoutedElements()
+  const [running, setRunning] = useState(false)
+
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
-      console.log("node clicked")
-
-      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
+      console.log("node clicked", node)
 
       const existingNodeIds = new Set(nodes.map((n) => n.id))
 
       const newNodes = allNodes.filter(
         (n) =>
           (node as NetworkNodeType).connectsTo.includes(n.id) &&
-          !existingNodeIds.has(n.id)
+          !existingNodeIds.has(n.id) // TODO: Add extra logic for nodes that already exist
       )
 
       if (newNodes.length == 0) return
 
       setNodes((nds) => [...nds, ...newNodes])
-      setEdges((eds) => [
-        ...eds,
-        ...getEdgesFromNodes([...newNodes, node as NetworkNodeType]),
-      ])
+
+      const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
+
+      setEdges([...edges, ...newEdges])
+
+      // console.log(edges)
+
+      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
     },
     [nodes, setNodes, setEdges]
   )
@@ -156,11 +298,26 @@ function Network() {
       nodes={nodes}
       edges={edges}
       nodeTypes={nodeTypes}
+      onNodeDragStart={dragEvents.start}
+      onNodeDrag={dragEvents.drag}
+      onNodeDragStop={dragEvents.stop}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
       fitView
     >
+      <Panel>
+        {initialized && toggleRunning && (
+          <button
+            onClick={() => {
+              toggleRunning.toggle()
+              setRunning(!running)
+            }}
+          >
+            {running ? "Stop" : "Start"} force simulation
+          </button>
+        )}
+      </Panel>
       <Background color="#808080" variant={BackgroundVariant.Dots} />
     </ReactFlow>
   )
