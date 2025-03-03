@@ -29,7 +29,7 @@ import {
   NodeCategory,
   UseLayoutedElementsReturn,
 } from "@/types"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import NetworkNode from "./NetworkNode"
 import collide from "../visualization/collide"
 
@@ -138,7 +138,7 @@ const simulation = forceSimulation()
   .stop()
 
 const useLayoutedElements = (): UseLayoutedElementsReturn => {
-  const { getNodes, setNodes, getEdges, fitView } = useReactFlow()
+  const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow()
   const initialized = useNodesInitialized()
 
   // You can use these events if you want the flow to remain interactive while
@@ -162,21 +162,20 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
     []
   )
 
-  let nodes: NetworkNodeType[] = (getNodes() as NetworkNodeType[]).map(
-    (node) => ({
-      ...node,
-      x: node.position.x,
-      y: node.position.y,
-    })
-  )
+  let nodes = (getNodes() as NetworkNodeType[]).map((node) => ({
+    ...node,
+    x: node.position.x,
+    y: node.position.y,
+  }))
   let edges = getEdges()
+  let running = false
+
+  console.log("nodes outside", nodes)
 
   return useMemo(() => {
-    let running = false
-
     // If React Flow hasn't initialized our nodes with a width and height yet, or
     // if there are no nodes in the flow, then we can't run the simulation!
-    if (!initialized || nodes.length === 0) return [false, null, dragEvents]
+    if (!initialized || nodes.length == 0) return [false, null, dragEvents]
 
     simulation.nodes(nodes).force(
       "link",
@@ -186,10 +185,24 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
         .distance(100)
     )
 
+    console.log("memo nodes", nodes)
     // The tick function is called every animation frame while the simulation is
     // running and progresses the simulation one step forward each time.
     const tick = () => {
-      ;(getNodes() as NetworkNodeType[]).forEach((nd, i) => {
+      const tickNodes = getNodes() as NetworkNodeType[]
+
+      console.log("original nodes", nodes)
+      console.log("tick nodes", tickNodes)
+
+      if (tickNodes.length != nodes.length) {
+        console.log("here")
+        window.requestAnimationFrame(() => {
+          if (running) tick()
+        })
+        return
+      }
+
+      nodes.forEach((nd, i) => {
         const dragging = draggingNodeRef.current?.id == nd.id
 
         // Setting the fx/fy properties of a node tells the simulation to "fix"
@@ -200,7 +213,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
           nodes[i].fx = draggingNodeRef.current.position.x
           nodes[i].fy = draggingNodeRef.current.position.y
         } else {
-          console.log(nodes) // TODO: Fix nodes not being updated after adding nodes
+          // TODO: Fix nodes not being updated after adding nodes
           delete nodes[i].fx
           delete nodes[i].fy
         }
@@ -211,7 +224,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
         nodes.map((node) => {
           return {
             ...node,
-            position: { x: node.fx ?? node.x!, y: node.fy ?? node.y! },
+            position: { x: node.fx ?? node.x, y: node.fy ?? node.y },
             x: node.fx ?? node.x!,
             y: node.fy ?? node.y!,
           }
@@ -219,24 +232,13 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
       )
 
       window.requestAnimationFrame(() => {
-        // Give React and React Flow a chance to update and render the new node
-        // positions before we fit the viewport to the new layout.
         fitView()
 
-        // If the simulation hasn't been stopped, schedule another tick.
         if (running) tick()
       })
     }
 
     const toggle = () => {
-      if (!running) {
-        getNodes().forEach((node, index) => {
-          let simNode = nodes[index]
-          Object.assign(simNode, node)
-          simNode.x = node.position.x
-          simNode.y = node.position.y
-        })
-      }
       running = !running
       running && window.requestAnimationFrame(tick)
 
@@ -246,7 +248,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
     const isRunning = () => running
 
     return [true, { toggle, isRunning }, dragEvents]
-  }, [initialized, dragEvents, getNodes, getEdges, setNodes, fitView])
+  }, [initialized, dragEvents, getNodes, getEdges, setNodes, fitView, running])
 }
 
 const initialNodes: NetworkNodeType[] = allNodes.filter(
@@ -262,13 +264,19 @@ function Network() {
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NetworkNodeType>(initialNodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
-
-  const [initialized, toggleRunning, dragEvents] = useLayoutedElements()
   const [running, setRunning] = useState(false)
+  const [nodeAddition, setAddition] = useState(false)
+  const initializedNodes = useNodesInitialized()
+  const [initialized, toggleRunning, dragEvents] = useLayoutedElements()
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
+      toggleRunning?.toggle()
+      setRunning(false)
+
       console.log("node clicked", node)
+
+      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
 
       const existingNodeIds = new Set(nodes.map((n) => n.id))
 
@@ -279,19 +287,23 @@ function Network() {
       )
 
       if (newNodes.length == 0) return
+      const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
 
       setNodes((nds) => [...nds, ...newNodes])
 
-      const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
-
       setEdges([...edges, ...newEdges])
-
-      // console.log(edges)
-
-      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
+      console.log("inside onNodeClick", nodes, initializedNodes)
+      setAddition(true)
     },
-    [nodes, setNodes, setEdges]
+    [nodes]
   )
+
+  if (nodeAddition && initializedNodes && nodes[nodes.length - 1].measured) {
+    console.log("node addition check", nodes, initializedNodes)
+    toggleRunning?.toggle()
+    setRunning(true)
+    setAddition(false)
+  }
 
   return (
     <ReactFlow

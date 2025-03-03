@@ -1,4 +1,4 @@
-import { Node, OnNodeDrag } from "@xyflow/react"
+import { Edge, Node, OnNodeDrag } from "@xyflow/react"
 import { SimulationNodeDatum } from "d3-force"
 
 type NetworkNodeData = {
@@ -34,6 +34,8 @@ export type UseLayoutedElementsReturn = [
   {
     toggle: () => void
     isRunning: () => boolean
+    // restartSimulation: () => void
+    // addNodes: (newNodes: NetworkNodeType[], newEdges: Edge[]) => void
   } | null,
   DragEvents // dragEvents object
 ]
