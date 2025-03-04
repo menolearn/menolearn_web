@@ -34,8 +34,6 @@ export type UseLayoutedElementsReturn = [
   {
     toggle: () => void
     isRunning: () => boolean
-    // restartSimulation: () => void
-    // addNodes: (newNodes: NetworkNodeType[], newEdges: Edge[]) => void
   } | null,
   DragEvents // dragEvents object
 ]

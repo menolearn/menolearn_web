@@ -1,11 +1,10 @@
-import { useCallback } from "react"
 import { Handle, NodeProps, Position } from "@xyflow/react"
 import { NetworkNodeType } from "@/types"
 
 export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
   return (
     <>
-      <div className="border-2 border-black max-w-60 px-6 py-3 text-center rounded-md">
+      <div className="border-2 border-black px-6 py-3 text-center rounded-md">
         <p className="font-semibold">{data.label}</p>
       </div>
       <Handle type="target" position={Position.Top} id={`t-${id}`} />

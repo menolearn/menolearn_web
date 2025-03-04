@@ -29,7 +29,7 @@ import {
   NodeCategory,
   UseLayoutedElementsReturn,
 } from "@/types"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import NetworkNode from "./NetworkNode"
 import collide from "../visualization/collide"
 
