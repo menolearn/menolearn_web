@@ -271,10 +271,6 @@ function Network() {
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
-      toggleRunning?.toggle()
-      const prevRunning = running
-      setRunning(false)
-
       console.log("node clicked", node)
 
       setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
@@ -288,6 +284,9 @@ function Network() {
       )
 
       if (newNodes.length == 0) return
+      toggleRunning?.toggle()
+      const prevRunning = running
+      setRunning(false)
       const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
 
       setNodes((nds) => [...nds, ...newNodes])
