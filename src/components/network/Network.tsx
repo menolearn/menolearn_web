@@ -31,7 +31,7 @@ import {
 } from "@/types"
 import { useCallback, useMemo, useRef, useState } from "react"
 import NetworkNode from "./NetworkNode"
-import collide from "../visualization/collide"
+import collide from "./collide"
 
 const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
   return nodes.flatMap((node) => {
