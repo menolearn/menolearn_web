@@ -272,6 +272,7 @@ function Network() {
   const onNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
       toggleRunning?.toggle()
+      const prevRunning = running
       setRunning(false)
 
       console.log("node clicked", node)
@@ -293,7 +294,7 @@ function Network() {
 
       setEdges([...edges, ...newEdges])
       console.log("inside onNodeClick", nodes, initializedNodes)
-      setAddition(true)
+      if (prevRunning) setAddition(true)
     },
     [nodes]
   )
