@@ -130,7 +130,7 @@ const getClosestHandles = (
 }
 
 const simulation = forceSimulation()
-  .force("charge", forceManyBody().strength(-1000))
+  .force("charge", forceManyBody().strength(-1500))
   .force("x", forceX().x(0).strength(0.05))
   .force("y", forceY().y(0).strength(0.05))
   .force("collide", collide())
@@ -138,7 +138,7 @@ const simulation = forceSimulation()
   .stop()
 
 const useLayoutedElements = (): UseLayoutedElementsReturn => {
-  const { getNodes, setNodes, getEdges, setEdges, fitView } = useReactFlow()
+  const { getNodes, setNodes, getEdges, fitView } = useReactFlow()
   const initialized = useNodesInitialized()
 
   // You can use these events if you want the flow to remain interactive while
@@ -169,8 +169,6 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
   }))
   let edges = getEdges()
   let running = false
-
-  console.log("nodes outside", nodes)
 
   return useMemo(() => {
     // If React Flow hasn't initialized our nodes with a width and height yet, or
@@ -269,34 +267,41 @@ function Network() {
   const initializedNodes = useNodesInitialized()
   const [initialized, toggleRunning, dragEvents] = useLayoutedElements()
 
-  const onNodeClick: NodeMouseHandler = useCallback(
-    (_, node) => {
-      console.log("node clicked", node)
+  const onNodeClick: NodeMouseHandler = (_, node) => {
+    console.log("node clicked", node)
 
-      setCenter(node.position.x, node.position.y, { zoom: 1, duration: 500 })
+    setCenter(
+      node.position.x + node.measured!.width! / 2,
+      node.position.y + node.measured!.height! / 2,
+      {
+        zoom: 1,
+        duration: 500,
+      }
+    )
 
-      const existingNodeIds = new Set(nodes.map((n) => n.id))
+    const existingNodeIds = new Set(nodes.map((n) => n.id))
 
-      const newNodes = allNodes.filter(
-        (n) =>
-          (node as NetworkNodeType).connectsTo.includes(n.id) &&
-          !existingNodeIds.has(n.id) // TODO: Add extra logic for nodes that already exist
-      )
+    const newNodes = allNodes.filter(
+      (n) =>
+        (node as NetworkNodeType).connectsTo.includes(n.id) &&
+        !existingNodeIds.has(n.id) // TODO: Add extra logic for nodes that already exist
+    )
 
-      if (newNodes.length == 0) return
+    if (newNodes.length == 0) return
+    const prevRunning = running
+    if (prevRunning) {
       toggleRunning?.toggle()
-      const prevRunning = running
       setRunning(false)
-      const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
+    }
 
-      setNodes((nds) => [...nds, ...newNodes])
+    const newEdges = getEdgesFromNodes([...newNodes, node as NetworkNodeType])
 
-      setEdges([...edges, ...newEdges])
-      console.log("inside onNodeClick", nodes, initializedNodes)
-      if (prevRunning) setAddition(true)
-    },
-    [nodes]
-  )
+    setNodes((nds) => [...nds, ...newNodes])
+
+    setEdges([...edges, ...newEdges])
+    console.log("inside onNodeClick", nodes, initializedNodes)
+    if (prevRunning) setAddition(true)
+  }
 
   if (nodeAddition && initializedNodes && nodes[nodes.length - 1].measured) {
     console.log("node addition check", nodes, initializedNodes)
@@ -322,8 +327,8 @@ function Network() {
         {initialized && toggleRunning && (
           <button
             onClick={() => {
-              toggleRunning.toggle()
               setRunning(!running)
+              toggleRunning.toggle()
             }}
           >
             {running ? "Stop" : "Start"} force simulation

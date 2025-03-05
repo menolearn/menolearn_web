@@ -4,6 +4,7 @@ import { SimulationNodeDatum } from "d3-force"
 type NetworkNodeData = {
   label: string
   category: NodeCategory
+  description?: string
 }
 
 export type NetworkNodeType = Node<NetworkNodeData, "network"> & {

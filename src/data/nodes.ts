@@ -40,14 +40,24 @@ export const allNodes: NetworkNodeType[] = [
   {
     id: "2a",
     type: "network",
-    data: { label: "Pharmacological", category: NodeCategory.relief },
+    data: {
+      label: "Pharmacological",
+      category: NodeCategory.relief,
+      description:
+        "This encompasses all treatments that involve drugs or medications, whether over-the-counter or prescription. ",
+    },
     position: { x: -300, y: 300 },
     connectsTo: ["3a", "3b", "3c"],
   },
   {
     id: "2b",
     type: "network",
-    data: { label: "Alternative", category: NodeCategory.relief },
+    data: {
+      label: "Alternative",
+      category: NodeCategory.relief,
+      description:
+        "This encompasses all treatments that involve lifestyle changes, therapies, and herbal or supplemental remedies.",
+    },
     position: { x: 100, y: 500 },
     connectsTo: ["6a", "6b", "6c", "6d"],
   },
@@ -58,6 +68,8 @@ export const allNodes: NetworkNodeType[] = [
     data: {
       label: "HRT/MHT",
       category: NodeCategory.pharma,
+      description:
+        "Hormone-based treatments that use estrogen and/or progesterone to manage symptoms like hot flashes, bone loss, and vaginal dryness. They come in various forms, including oral tablets (e.g., combined oral contraceptives), transdermal patches, topical gels, creams, injections, and intrauterine devices.",
     },
     position: { x: -300, y: 100 },
     connectsTo: ["4a", "4b", "4c"],
@@ -68,6 +80,8 @@ export const allNodes: NetworkNodeType[] = [
     data: {
       label: "Other Novel Hormonal",
       category: NodeCategory.pharma,
+      description:
+        "Alternative hormones, hormonal compounds or selective estrogen receptor modulators (SERMs) provide symptom relief with different safety profiles and targeted effects. Includes Tibolone (Livial), Testosterone, Tissue-Selective Estrogen Complexes (TSEC) like Duavee, and Ospemifene, offering symptom relief while minimizing risks associated with systemic estrogen use. These therapies come in various forms, including oral tablets, patches, and gels.",
     },
     position: { x: -300, y: 500 },
     connectsTo: [],
@@ -75,7 +89,12 @@ export const allNodes: NetworkNodeType[] = [
   {
     id: "3c",
     type: "network",
-    data: { label: "Non-Hormonal", category: NodeCategory.pharma },
+    data: {
+      label: "Non-Hormonal",
+      category: NodeCategory.pharma,
+      description:
+        "Offer menopause symptom relief without estrogen or progesterone. This includes NK3 receptor antagonists like Fezolinetan and medications such as Clonidine, Gabapentin, and antidepressants (SSRIs, SNRIs like Effexor and Lexapro).",
+    },
     position: { x: -700, y: 300 },
     connectsTo: [],
   },
@@ -83,21 +102,36 @@ export const allNodes: NetworkNodeType[] = [
   {
     id: "4a",
     type: "network",
-    data: { label: "EPT", category: NodeCategory.hrt },
+    data: {
+      label: "EPT",
+      category: NodeCategory.hrt,
+      description:
+        "“EPT” refers to Estrogen-Progestin therapy. This is a type of combination hormone replacement therapy that combines estrogen and progestin, a synthetic form of progesterone, to treat menopausal symptoms in women who still have a uterus.",
+    },
     position: { x: -300, y: 0 },
     connectsTo: [],
   },
   {
     id: "4b",
     type: "network",
-    data: { label: "ET", category: NodeCategory.hrt },
+    data: {
+      label: "ET",
+      category: NodeCategory.hrt,
+      description:
+        "'ET' stands for 'Estrogen Therapy,' which refers to the treatment that consists of only estrogen hormones to alleviate symptoms associated with menopause, typically prescribed for women who have had a hysterectomy.",
+    },
     position: { x: -700, y: 100 },
     connectsTo: [],
   },
   {
     id: "4c",
     type: "network",
-    data: { label: "Progesterone", category: NodeCategory.hrt },
+    data: {
+      label: "Progesterone",
+      category: NodeCategory.hrt,
+      description:
+        "Progesterone is recommended to be used in combination with Estrogen (EPT). LNG-IUS is a solely progestin-based intrauterine device. Unless used in combination with oral or percutaneous estrogen, progesterone-only therapy is typically prescribed to those with contraindications to estrogen.",
+    },
     position: { x: 0, y: 100 },
     connectsTo: [],
   },
