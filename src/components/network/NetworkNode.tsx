@@ -11,7 +11,7 @@ export default function NetworkNode({
   const [expanded, setExpanded] = useState(false)
   return (
     <>
-      <div className="border-2 border-black grid justify-items-start max-w-xs px-6 py-3 text-center rounded-xl bg-white">
+      <div className="border-2 border-blue-500 grid justify-items-start max-w-xs px-6 py-3 text-center rounded-xl bg-blue-100">
         <div className="flex items-center gap-2 justify-center">
           {" "}
           <p className="font-semibold">{data.label}</p>

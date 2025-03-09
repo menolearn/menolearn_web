@@ -5,7 +5,7 @@ export const allNodes: NetworkNodeType[] = [
     id: "1",
     type: "network",
     data: { label: "What Is Menopause?", category: NodeCategory.initial },
-    position: { x: 400, y: 300 },
+    position: { x: 400, y: 100 },
     connectsTo: ["1a", "1b", "1c", "1d"],
   },
   {
@@ -19,7 +19,7 @@ export const allNodes: NetworkNodeType[] = [
     id: "1b",
     type: "network",
     data: { label: "Need Support?", category: NodeCategory.initial },
-    position: { x: 400, y: 500 },
+    position: { x: 500, y: 300 },
     connectsTo: ["5a", "5b", "5c", "5d"],
   },
   {
@@ -33,7 +33,7 @@ export const allNodes: NetworkNodeType[] = [
     id: "1d",
     type: "network",
     data: { label: "Take A Quiz", category: NodeCategory.initial },
-    position: { x: 400, y: 100 },
+    position: { x: 300, y: 300 },
     connectsTo: [],
   },
   // Relief nodes
@@ -46,7 +46,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "This encompasses all treatments that involve drugs or medications, whether over-the-counter or prescription. ",
     },
-    position: { x: -300, y: 300 },
+    position: { x: -400, y: 200 },
     connectsTo: ["3a", "3b", "3c"],
   },
   {
@@ -58,7 +58,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "This encompasses all treatments that involve lifestyle changes, therapies, and herbal or supplemental remedies.",
     },
-    position: { x: 100, y: 500 },
+    position: { x: -200, y: 200 },
     connectsTo: ["6a", "6b", "6c", "6d"],
   },
   // Pharmacological nodes
@@ -71,7 +71,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "Hormone-based treatments that use estrogen and/or progesterone to manage symptoms like hot flashes, bone loss, and vaginal dryness. They come in various forms, including oral tablets (e.g., combined oral contraceptives), transdermal patches, topical gels, creams, injections, and intrauterine devices.",
     },
-    position: { x: -300, y: 100 },
+    position: { x: -300, y: 300 },
     connectsTo: ["4a", "4b", "4c"],
   },
   {
@@ -83,7 +83,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "Alternative hormones, hormonal compounds or selective estrogen receptor modulators (SERMs) provide symptom relief with different safety profiles and targeted effects. Includes Tibolone (Livial), Testosterone, Tissue-Selective Estrogen Complexes (TSEC) like Duavee, and Ospemifene, offering symptom relief while minimizing risks associated with systemic estrogen use. These therapies come in various forms, including oral tablets, patches, and gels.",
     },
-    position: { x: -300, y: 500 },
+    position: { x: -500, y: 300 },
     connectsTo: [],
   },
   {
@@ -108,7 +108,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "“EPT” refers to Estrogen-Progestin therapy. This is a type of combination hormone replacement therapy that combines estrogen and progestin, a synthetic form of progesterone, to treat menopausal symptoms in women who still have a uterus.",
     },
-    position: { x: -300, y: 0 },
+    position: { x: -300, y: 500 },
     connectsTo: [],
   },
   {
@@ -120,7 +120,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "'ET' stands for 'Estrogen Therapy,' which refers to the treatment that consists of only estrogen hormones to alleviate symptoms associated with menopause, typically prescribed for women who have had a hysterectomy.",
     },
-    position: { x: -700, y: 100 },
+    position: { x: -700, y: 500 },
     connectsTo: [],
   },
   {
@@ -132,7 +132,7 @@ export const allNodes: NetworkNodeType[] = [
       description:
         "Progesterone is recommended to be used in combination with Estrogen (EPT). LNG-IUS is a solely progestin-based intrauterine device. Unless used in combination with oral or percutaneous estrogen, progesterone-only therapy is typically prescribed to those with contraindications to estrogen.",
     },
-    position: { x: 0, y: 100 },
+    position: { x: 0, y: 500 },
     connectsTo: [],
   },
   // Support nodes
@@ -140,21 +140,21 @@ export const allNodes: NetworkNodeType[] = [
     id: "5a",
     type: "network",
     data: { label: "Mental Health", category: NodeCategory.support },
-    position: { x: 300, y: 500 },
+    position: { x: 300, y: 300 },
     connectsTo: [],
   },
   {
     id: "5b",
     type: "network",
     data: { label: "Vasomotor", category: NodeCategory.support },
-    position: { x: 700, y: 300 },
+    position: { x: 500, y: 300 },
     connectsTo: [],
   },
   {
     id: "5c",
     type: "network",
     data: { label: "Genitourinary", category: NodeCategory.support },
-    position: { x: 400, y: 100 },
+    position: { x: 400, y: 300 },
     connectsTo: [],
   },
   // Alt treatments
@@ -162,28 +162,28 @@ export const allNodes: NetworkNodeType[] = [
     id: "6a",
     type: "network",
     data: { label: "Other Symptoms", category: NodeCategory.alternative },
-    position: { x: 500, y: 500 },
+    position: { x: 0, y: 300 },
     connectsTo: [],
   },
   {
     id: "6b",
     type: "network",
     data: { label: "Therapy", category: NodeCategory.alternative },
-    position: { x: 100, y: 300 },
+    position: { x: -200, y: 300 },
     connectsTo: [],
   },
   {
     id: "6c",
     type: "network",
     data: { label: "Lifestyle", category: NodeCategory.alternative },
-    position: { x: 500, y: 500 },
+    position: { x: 200, y: 300 },
     connectsTo: [],
   },
   {
     id: "6d",
     type: "network",
     data: { label: "Supplemental", category: NodeCategory.alternative },
-    position: { x: 700, y: 300 },
+    position: { x: 400, y: 300 },
     connectsTo: [],
   },
 ]

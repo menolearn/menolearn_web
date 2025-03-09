@@ -52,6 +52,7 @@ const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
             id: `e${node.id}-${targetId}`,
             source: node.id,
             target: targetId,
+            style: {stroke: "#3b82f6" } //  edge color
             // sourceHandle: closestSourceHandle.id,
             // targetHandle: closestTargetHandle.id,
           }
