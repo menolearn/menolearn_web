@@ -2,6 +2,7 @@ import { Edge, Node, OnNodeDrag } from "@xyflow/react"
 import { SimulationNodeDatum } from "d3-force"
 
 type NetworkNodeData = {
+  icon: any
   label: string
   category: NodeCategory
   description?: string

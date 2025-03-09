@@ -9,11 +9,13 @@ export default function NetworkNode({
   expandClick,
 }: NodeProps<NetworkNodeType> & { expandClick: (id: string) => void }) {
   const [expanded, setExpanded] = useState(false)
+  const Icon = data.icon;
   return (
     <>
       <div className="border-2 border-blue-500 grid justify-items-start max-w-xs px-6 py-3 text-center rounded-xl bg-blue-100">
         <div className="flex items-center gap-2 justify-center">
           {" "}
+          {Icon && <Icon className="w-6 h-6 text-blue-500" />}
           <p className="font-semibold">{data.label}</p>
           {data.description ? (
             <button
