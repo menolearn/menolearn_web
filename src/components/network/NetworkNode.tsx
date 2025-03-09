@@ -9,7 +9,7 @@ export default function NetworkNode({
   expandClick,
 }: NodeProps<NetworkNodeType> & { expandClick: (id: string) => void }) {
   const [expanded, setExpanded] = useState(false)
-  const Icon = data.icon;
+  const Icon = data.icon
   return (
     <>
       <div className="border-2 border-blue-500 grid justify-items-start max-w-xs px-6 py-3 text-center rounded-xl bg-blue-100">
@@ -49,24 +49,13 @@ export default function NetworkNode({
         id={`t-${id}`}
         isConnectable={false}
       />
-      {/* <Handle
-        type="source"
-        position={Position.Top}
-        id={`t-${id}`}
-        isConnectable={false}
-      /> */}
+
       <Handle
         type="source"
         position={Position.Bottom}
         id={`b-${id}`}
         isConnectable={false}
       />
-      {/* <Handle
-        type="target"
-        position={Position.Bottom}
-        id={`b-${id}`}
-        isConnectable={false}
-      /> */}
     </>
   )
 }

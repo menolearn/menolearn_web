@@ -1,8 +1,12 @@
 import { Edge, Node, OnNodeDrag } from "@xyflow/react"
 import { SimulationNodeDatum } from "d3-force"
+import { LucideProps } from "lucide-react"
+import { ForwardRefExoticComponent, RefAttributes } from "react"
 
 type NetworkNodeData = {
-  icon: any
+  icon?: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >
   label: string
   category: NodeCategory
   description?: string
