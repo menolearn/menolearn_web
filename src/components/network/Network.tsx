@@ -10,6 +10,8 @@ import {
   BackgroundVariant,
   useNodesInitialized,
   Panel,
+  NodeChange,
+  NodeDimensionChange,
 } from "@xyflow/react"
 import {
   forceSimulation,
@@ -29,7 +31,7 @@ import {
   NodeCategory,
   UseLayoutedElementsReturn,
 } from "@/types"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import NetworkNode from "./NetworkNode"
 import collide from "./collide"
 
@@ -130,10 +132,10 @@ const getClosestHandles = (
 }
 
 const simulation = forceSimulation()
-  .force("charge", forceManyBody().strength(-1500))
-  .force("x", forceX().x(0).strength(0.05))
-  .force("y", forceY().y(0).strength(0.05))
-  .force("collide", collide()) // TODO: THIS IS NOT WORKING!!!!
+  .force("charge", forceManyBody().strength(-1600))
+  .force("x", forceX().x(0).strength(0.02))
+  .force("y", forceY().y(0).strength(0.02))
+  .force("collide", collide())
   .alphaTarget(0.05)
   .stop()
 
@@ -179,8 +181,8 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
       "link",
       forceLink(edges)
         .id((d: any) => d.id)
-        .strength(0.05)
-        .distance(100)
+        .strength(0.02)
+        .distance(200)
     )
 
     console.log("memo nodes", nodes)
@@ -191,14 +193,6 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
 
       console.log("original nodes", nodes)
       console.log("tick nodes", tickNodes)
-
-      if (tickNodes.length != nodes.length) {
-        console.log("here")
-        window.requestAnimationFrame(() => {
-          if (running) tick()
-        })
-        return
-      }
 
       nodes.forEach((nd, i) => {
         const dragging = draggingNodeRef.current?.id == nd.id
@@ -246,7 +240,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
     const isRunning = () => running
 
     return [true, { toggle, isRunning }, dragEvents]
-  }, [initialized, dragEvents, getNodes, getEdges, setNodes, fitView, running])
+  }, [initialized, dragEvents, getNodes, getEdges, setNodes, fitView])
 }
 
 const initialNodes: NetworkNodeType[] = allNodes.filter(
@@ -255,8 +249,6 @@ const initialNodes: NetworkNodeType[] = allNodes.filter(
 
 const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
 
-const nodeTypes = { network: NetworkNode }
-
 function Network() {
   const { setCenter } = useReactFlow<NetworkNodeType, Edge>()
   const [nodes, setNodes, onNodesChange] =
@@ -264,8 +256,14 @@ function Network() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
   const [running, setRunning] = useState(false)
   const [nodeAddition, setAddition] = useState(false)
+  const [nodeExpansionId, setNodeExpansionId] = useState("")
   const initializedNodes = useNodesInitialized()
-  const [initialized, toggleRunning, dragEvents] = useLayoutedElements()
+  const [, toggleRunning, dragEvents] = useLayoutedElements()
+  console.log("initialized", initializedNodes)
+
+  const onExpandClick = (id: string) => {
+    setNodeExpansionId(id)
+  }
 
   const onNodeClick: NodeMouseHandler = (_, node) => {
     console.log("node clicked", node)
@@ -299,16 +297,25 @@ function Network() {
     setNodes((nds) => [...nds, ...newNodes])
 
     setEdges([...edges, ...newEdges])
-    console.log("inside onNodeClick", nodes, initializedNodes)
+
     if (prevRunning) setAddition(true)
   }
 
   if (nodeAddition && initializedNodes && nodes[nodes.length - 1].measured) {
-    console.log("node addition check", nodes, initializedNodes)
+    console.log("node addition check", nodes)
     toggleRunning?.toggle()
     setRunning(true)
     setAddition(false)
   }
+
+  const nodeTypes = useMemo(
+    () => ({
+      network: (props: any) => (
+        <NetworkNode {...props} expandClick={onExpandClick} />
+      ),
+    }),
+    []
+  )
 
   return (
     <ReactFlow
@@ -324,7 +331,7 @@ function Network() {
       fitView
     >
       <Panel>
-        {initialized && toggleRunning && (
+        {initializedNodes && toggleRunning && (
           <button
             onClick={() => {
               setRunning(!running)

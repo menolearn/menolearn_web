@@ -3,7 +3,11 @@ import { NetworkNodeType } from "@/types"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 
-export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
+export default function NetworkNode({
+  id,
+  data,
+  expandClick,
+}: NodeProps<NetworkNodeType> & { expandClick: (id: string) => void }) {
   const [expanded, setExpanded] = useState(false)
   return (
     <>
@@ -16,6 +20,7 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
               onClick={(e) => {
                 e.stopPropagation()
                 setExpanded(!expanded)
+                expandClick(id)
               }}
               className={`transition-all ease-in-out duration-500 ${
                 expanded ? "rotate-180" : ""
