@@ -13,7 +13,10 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
           <p className="font-semibold">{data.label}</p>
           {data.description ? (
             <button
-              onClick={() => setExpanded(!expanded)}
+              onClick={(e) => {
+                e.stopPropagation()
+                setExpanded(!expanded)
+              }}
               className={`transition-all ease-in-out duration-500 ${
                 expanded ? "rotate-180" : ""
               }`}

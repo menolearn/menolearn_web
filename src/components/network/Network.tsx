@@ -133,7 +133,7 @@ const simulation = forceSimulation()
   .force("charge", forceManyBody().strength(-1500))
   .force("x", forceX().x(0).strength(0.05))
   .force("y", forceY().y(0).strength(0.05))
-  .force("collide", collide())
+  .force("collide", collide()) // TODO: THIS IS NOT WORKING!!!!
   .alphaTarget(0.05)
   .stop()
 
