@@ -52,8 +52,8 @@ const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
             id: `e${node.id}-${targetId}`,
             source: node.id,
             target: targetId,
-            sourceHandle: closestSourceHandle.id,
-            targetHandle: closestTargetHandle.id,
+            // sourceHandle: closestSourceHandle.id,
+            // targetHandle: closestTargetHandle.id,
           }
         }
 
@@ -133,8 +133,8 @@ const getClosestHandles = (
 
 const simulation = forceSimulation()
   .force("charge", forceManyBody().strength(-1600))
-  .force("x", forceX().x(0).strength(0.02))
-  .force("y", forceY().y(0).strength(0.02))
+  .force("x", forceX().x(0).strength(0.03))
+  .force("y", forceY().y(0).strength(0.03))
   .force("collide", collide())
   .alphaTarget(0.05)
   .stop()
@@ -286,6 +286,7 @@ function Network() {
     )
 
     if (newNodes.length == 0) return
+
     const prevRunning = running
     if (prevRunning) {
       toggleRunning?.toggle()

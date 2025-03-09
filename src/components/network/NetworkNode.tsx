@@ -47,24 +47,24 @@ export default function NetworkNode({
         id={`t-${id}`}
         isConnectable={false}
       />
-      <Handle
+      {/* <Handle
         type="source"
         position={Position.Top}
         id={`t-${id}`}
         isConnectable={false}
-      />
+      /> */}
       <Handle
         type="source"
         position={Position.Bottom}
         id={`b-${id}`}
         isConnectable={false}
       />
-      <Handle
+      {/* <Handle
         type="target"
         position={Position.Bottom}
         id={`b-${id}`}
         isConnectable={false}
-      />
+      /> */}
     </>
   )
 }
