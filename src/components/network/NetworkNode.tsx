@@ -12,10 +12,10 @@ export default function NetworkNode({
   const Icon = data.icon
   return (
     <>
-      <div className="border-2 border-blue-500 grid justify-items-start max-w-xs px-6 py-3 text-center rounded-xl bg-blue-100">
-        <div className="flex items-center gap-2 justify-center">
+      <div className="grid max-w-xs justify-items-start rounded-xl border-2 border-blue-500 bg-blue-100 px-6 py-3 text-center">
+        <div className="flex items-center justify-center gap-2">
           {" "}
-          {Icon && <Icon className="w-6 h-6 text-blue-500" />}
+          {Icon && <Icon className="h-6 w-6 text-blue-500" />}
           <p className="font-semibold">{data.label}</p>
           {data.description ? (
             <button
@@ -24,7 +24,7 @@ export default function NetworkNode({
                 setExpanded(!expanded)
                 expandClick(id)
               }}
-              className={`transition-all ease-in-out duration-500 ${
+              className={`transition-all duration-500 ease-in-out ${
                 expanded ? "rotate-180" : ""
               }`}
             >
@@ -34,10 +34,10 @@ export default function NetworkNode({
         </div>
 
         <div
-          className={`transition-all ease-in-out duration-500 text-left ${
+          className={`text-left transition-all duration-500 ease-in-out ${
             expanded
-              ? "opacity-100 max-h-[500px] scale-100 mt-2"
-              : "opacity-0 max-h-0 scale-95"
+              ? "mt-2 max-h-[500px] scale-100 opacity-100"
+              : "max-h-0 scale-95 opacity-0"
           }`}
         >
           {expanded && <p>{data.description}</p>}
