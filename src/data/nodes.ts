@@ -59,7 +59,7 @@ export const allNodes: NetworkNodeType[] = [
       category: NodeCategory.initial,
       icon: iconDict["question"],
     },
-    position: { x: 700, y: 300 },
+    position: { x: 720, y: 300 },
     connectsTo: [],
   },
   {
@@ -84,7 +84,7 @@ export const allNodes: NetworkNodeType[] = [
         "This encompasses all treatments that involve drugs or medications, whether over-the-counter or prescription. ",
       icon: iconDict["pharmacological"],
     },
-    position: { x: -400, y: 200 },
+    position: { x: -100, y: 400 },
     connectsTo: ["3a", "3b", "3c"],
   },
   {
@@ -97,7 +97,7 @@ export const allNodes: NetworkNodeType[] = [
         "This encompasses all treatments that involve lifestyle changes, therapies, and herbal or supplemental remedies.",
       icon: iconDict["alternative"],
     },
-    position: { x: -200, y: 200 },
+    position: { x: 200, y: 400 },
     connectsTo: ["6a", "6b", "6c", "6d"],
   },
   // Pharmacological nodes

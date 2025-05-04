@@ -46,7 +46,7 @@ const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
           id: `e${node.id}-${targetId}`,
           source: node.id,
           target: targetId,
-          style: { stroke: "#3b82f6" }, //  edge color
+          style: { stroke: "#7FB0CD", strokeWidth: 2 }, //  edge color
         }
       })
       .filter(Boolean) as Edge[]
@@ -83,7 +83,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
         draggingNodeRef.current = null
       },
     }),
-    []
+    [],
   )
 
   let nodes = (getNodes() as NetworkNodeType[]).map((node) => ({
@@ -104,7 +104,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
       forceLink(edges)
         .id((d: any) => d.id)
         .strength(0.02)
-        .distance(200)
+        .distance(200),
     )
 
     console.log("memo nodes", nodes)
@@ -142,7 +142,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
             x: node.fx ?? node.x!,
             y: node.fy ?? node.y!,
           }
-        })
+        }),
       )
 
       window.requestAnimationFrame(() => {
@@ -166,7 +166,7 @@ const useLayoutedElements = (): UseLayoutedElementsReturn => {
 }
 
 const initialNodes: NetworkNodeType[] = allNodes.filter(
-  (node) => node.data.category == NodeCategory.initial
+  (node) => node.data.category == NodeCategory.initial,
 )
 
 const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
@@ -178,14 +178,9 @@ function Network() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
   const [running, setRunning] = useState(false)
   const [nodeAddition, setAddition] = useState(false)
-  const [nodeExpansionId, setNodeExpansionId] = useState("")
   const initializedNodes = useNodesInitialized()
   const [, toggleRunning, dragEvents] = useLayoutedElements()
   console.log("initialized", initializedNodes)
-
-  const onExpandClick = (id: string) => {
-    setNodeExpansionId(id)
-  }
 
   const onNodeClick: NodeMouseHandler = (_, node) => {
     console.log("node clicked", node)
@@ -196,7 +191,7 @@ function Network() {
       {
         zoom: 1,
         duration: 500,
-      }
+      },
     )
 
     const existingNodeIds = new Set(nodes.map((n) => n.id))
@@ -204,7 +199,7 @@ function Network() {
     const newNodes = allNodes.filter(
       (n) =>
         (node as NetworkNodeType).connectsTo.includes(n.id) &&
-        !existingNodeIds.has(n.id) // TODO: Add extra logic for nodes that already exist
+        !existingNodeIds.has(n.id), // TODO: Add extra logic for nodes that already exist
     )
 
     if (newNodes.length == 0) return
@@ -233,11 +228,9 @@ function Network() {
 
   const nodeTypes = useMemo(
     () => ({
-      network: (props: any) => (
-        <NetworkNode {...props} expandClick={onExpandClick} />
-      ),
+      network: (props: any) => <NetworkNode {...props} />,
     }),
-    []
+    [],
   )
 
   return (

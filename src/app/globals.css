@@ -8,8 +8,8 @@ body {
   font-family: sans-serif;
   box-sizing: border-box;
 }
- 
-#app {
-  width: 100vw;
-  height: 100vh;
+
+:root {
+  --color-node-bg: #D9EEFB;
+  --color-node-border: #7FB0CD
 }

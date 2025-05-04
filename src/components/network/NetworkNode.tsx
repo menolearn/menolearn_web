@@ -3,26 +3,21 @@ import { NetworkNodeType } from "@/types"
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 
-export default function NetworkNode({
-  id,
-  data,
-  expandClick,
-}: NodeProps<NetworkNodeType> & { expandClick: (id: string) => void }) {
+export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
   const [expanded, setExpanded] = useState(false)
   const Icon = data.icon
   return (
     <>
-      <div className="grid max-w-xs justify-items-start rounded-xl border-2 border-blue-500 bg-blue-100 px-6 py-3 text-center">
+      <div className="border-nodeBorder bg-nodeBg grid max-w-xs justify-items-start rounded-3xl border-4 px-6 py-3 text-center">
         <div className="flex items-center justify-center gap-2">
           {" "}
-          {Icon && <Icon className="h-6 w-6 text-blue-500" />}
+          {Icon && <Icon className="h-6 w-6 text-black" />}
           <p className="font-semibold">{data.label}</p>
           {data.description ? (
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 setExpanded(!expanded)
-                expandClick(id)
               }}
               className={`transition-all duration-500 ease-in-out ${
                 expanded ? "rotate-180" : ""
