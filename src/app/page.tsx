@@ -1,6 +1,7 @@
 "use client"
 import ChatPill from "@/components/chat/ChatPill"
 import ChatTab from "@/components/chat/ChatTab"
+import NavButton from "@/components/network/NavButton"
 import Network from "@/components/network/Network"
 import { ReactFlowProvider } from "@xyflow/react"
 import { useState } from "react"

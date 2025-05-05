@@ -2,6 +2,7 @@
 import { ArrowLeft, CircleArrowUp, MessageSquare } from "lucide-react"
 import { useState } from "react"
 import ChatPill from "./ChatPill"
+import Image from "next/image"
 
 export default function ChatTab({
   handleClick,
@@ -18,22 +19,28 @@ export default function ChatTab({
   return (
     <>
       <div
-        className={`${open ? "h-[90%]" : "h-0"} fixed bottom-0 z-10 flex w-full flex-col overflow-hidden rounded-t-lg bg-red-500 transition-all duration-300 ease-in-out`}
+        className={`${open ? "h-screen" : "h-0"} fixed bottom-0 z-10 flex w-full flex-col overflow-hidden rounded-t-lg bg-[#e3e3e3] transition-all duration-300 ease-in-out`}
       >
         <div
-          className="flex items-center justify-between bg-red-700 px-4 py-5 hover:cursor-pointer"
+          className="relative flex items-center justify-between bg-[#d9d9d9] px-4 py-5 hover:cursor-pointer"
           onClick={handleClick}
         >
-          <ArrowLeft className={`${open ? "opacity-100" : "opacity-0"}`} />
-          <div>Chat Tab</div>
-          <MessageSquare />
+          <ArrowLeft />
+          <div className="absolute left-1/2 h-full w-32 -translate-x-1/2">
+            <Image
+              // className="object-contain"
+              src="/full-logo.png"
+              alt="Menolearn Logo"
+              fill
+            />
+          </div>
         </div>
 
         {open && (
           <div className="flex flex-1 flex-col p-4">
             <div className="flex-1">Chat Messages</div>
             <form
-              className="flex rounded-xl border-2 border-black px-4 py-2"
+              className="flex rounded-full border-2 border-black px-4 py-2"
               onSubmit={handleSubmit}
             >
               <input
