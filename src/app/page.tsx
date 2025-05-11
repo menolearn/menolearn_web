@@ -1,7 +1,7 @@
 "use client"
 import ChatPill from "@/components/chat/ChatPill"
 import ChatTab from "@/components/chat/ChatTab"
-import NavButton from "@/components/network/NavButton"
+import NavBar from "@/components/NavBar"
 import Network from "@/components/network/Network"
 import { ReactFlowProvider } from "@xyflow/react"
 import { useState } from "react"
@@ -13,19 +13,26 @@ export default function Home() {
     setChatOpen(true)
   }
 
-  const handleClick = () => {
+  const handleChatTopBarClick = () => {
     setChatOpen(!open)
   }
 
   return (
     <>
-      <ChatPill handleClick={handleChatPillClick} />
-      <div className="font-poppins h-screen w-screen">
-        <ChatTab handleClick={handleClick} open={chatOpen} />
-        <ReactFlowProvider>
-          <Network />
-        </ReactFlowProvider>
+      <div className="flex h-screen flex-col">
+        <NavBar />
+        <div className="relative flex-1">
+          <ReactFlowProvider>
+            <Network />
+          </ReactFlowProvider>
+          <ChatTab
+            handleChatTopBarClick={handleChatTopBarClick}
+            open={chatOpen}
+          />
+        </div>
       </div>
+
+      <ChatPill handleClick={handleChatPillClick} />
     </>
   )
 }

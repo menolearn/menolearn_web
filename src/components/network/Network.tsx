@@ -8,29 +8,15 @@ import {
   NodeMouseHandler,
   useReactFlow,
   BackgroundVariant,
-  useNodesInitialized,
   Panel,
 } from "@xyflow/react"
-import {
-  forceSimulation,
-  forceLink,
-  forceManyBody,
-  forceX,
-  forceY,
-} from "d3-force"
 
 import "@xyflow/react/dist/style.css"
 
 import { allNodes } from "@/data/nodes"
-import {
-  DragEvents,
-  NetworkNodeType,
-  NodeCategory,
-  UseLayoutedElementsReturn,
-} from "@/types"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { NetworkNodeType, NodeCategory } from "@/types"
+import { useEffect, useMemo, useState } from "react"
 import NetworkNode from "./NetworkNode"
-import collide from "./collide"
 import NavButton from "./NavButton"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import { useLayoutedElements } from "@/hooks"
@@ -72,16 +58,6 @@ function Network() {
 
   const onNodeClick: NodeMouseHandler = (_, node) => {
     console.log("node clicked", node)
-
-    // Center on clicked node
-    setCenter(
-      node.position.x + node.measured!.width! / 2,
-      node.position.y + node.measured!.height! / 2,
-      {
-        zoom: 1,
-        duration: 500,
-      },
-    )
 
     // Get immediate children of clicked node
     const existingNodeIds = new Set(nodes.map((n) => n.id))
