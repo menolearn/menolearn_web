@@ -4,6 +4,7 @@ import { useState } from "react"
 
 import Image from "next/image"
 import ChatMessage from "./ChatMessage"
+import ChatPill from "./ChatPill"
 
 export default function ChatTab({
   handleChatTopBarClick,
@@ -22,7 +23,7 @@ export default function ChatTab({
       style={{
         background: "radial-gradient(ellipse at top, #F4F1FF 0%, #DAEFFF 100%)",
       }}
-      className={`absolute inset-0 ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-xl transition-all duration-300 ease-in-out`}
+      className={`absolute inset-0 ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
     >
       <div
         className="flex items-center justify-center border-b-2 border-b-[#CDCAD6] hover:cursor-pointer"
@@ -44,19 +45,35 @@ export default function ChatTab({
             <ChatMessage type="Chat" message="lorem ipsum" />
             <ChatMessage type="User" message="lorem ipsum" />
           </div>
-          <form
-            className="flex rounded-full border-2 border-black px-4 py-2"
-            onSubmit={handleSubmit}
-          >
-            <input
-              type="text"
-              placeholder="Ask a question"
-              className="w-full bg-transparent outline-none"
-            />
-            <button type="submit">
-              <CircleArrowUp />
-            </button>
-          </form>
+          <div className="grid gap-4">
+            <div className="w-full overflow-x-auto">
+              <div className="flex gap-4">
+                <ChatPill text="Common treatments for menopause" />
+                <ChatPill text="Common treatments for menopause" />
+                <ChatPill text="Common treatments for menopause" />
+                <ChatPill text="Common treatments for menopause" />
+                <ChatPill text="Common treatments for menopause" />
+                <ChatPill text="Common treatments for menopause" />
+              </div>
+            </div>
+            <form
+              className="flex items-end rounded-3xl border-2 border-black px-4 py-2"
+              onSubmit={handleSubmit}
+            >
+              <textarea
+                placeholder="Ask a question"
+                rows={1}
+                className="w-full resize-none overflow-hidden bg-transparent outline-none"
+                onInput={(e) => {
+                  e.currentTarget.style.height = "auto"
+                  e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
+                }}
+              />
+              <button type="submit" className="ml-2">
+                <CircleArrowUp />
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

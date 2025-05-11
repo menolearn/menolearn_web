@@ -9,9 +9,9 @@ export default function ChatMessage({
 }) {
   return (
     <div
-      className={`${type == "Chat" ? "self-start bg-gradient-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-gradient-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[14px] p-[3px]`}
+      className={`${type == "Chat" ? "self-start bg-gradient-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-gradient-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[26px] p-[3px]`}
     >
-      <div className={`flex items-center gap-3 rounded-xl bg-white px-4 py-3`}>
+      <div className={`flex items-center gap-3 rounded-3xl bg-white px-4 py-3`}>
         {type == "Chat" && (
           <Image
             src="/MenolearnChatIcon.svg"
