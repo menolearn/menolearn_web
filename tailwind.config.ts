@@ -14,6 +14,7 @@ export default {
       },
       fontFamily: {
         poppins: ["var(--font-poppins)", "sans-serif"],
+        sourceSans3: ["var(--font-source-sans-3)", "sans-serif"],
       },
     },
   },

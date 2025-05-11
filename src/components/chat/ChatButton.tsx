@@ -1,7 +1,10 @@
-import { MessageSquare } from "lucide-react"
 import Image from "next/image"
 
-export default function ChatPill({ handleClick }: { handleClick: () => void }) {
+export default function ChatButton({
+  handleClick,
+}: {
+  handleClick: () => void
+}) {
   return (
     <button
       onClick={handleClick}

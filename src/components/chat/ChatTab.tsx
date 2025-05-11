@@ -3,6 +3,7 @@ import { CircleArrowUp } from "lucide-react"
 import { useState } from "react"
 
 import Image from "next/image"
+import ChatMessage from "./ChatMessage"
 
 export default function ChatTab({
   handleChatTopBarClick,
@@ -39,7 +40,10 @@ export default function ChatTab({
 
       {open && (
         <div className="flex flex-1 flex-col p-4">
-          <div className="flex-1">Chat Messages</div>
+          <div className="flex flex-1 flex-col gap-4">
+            <ChatMessage type="Chat" message="lorem ipsum" />
+            <ChatMessage type="User" message="lorem ipsum" />
+          </div>
           <form
             className="flex rounded-full border-2 border-black px-4 py-2"
             onSubmit={handleSubmit}

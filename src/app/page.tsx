@@ -1,5 +1,5 @@
 "use client"
-import ChatPill from "@/components/chat/ChatPill"
+import ChatButton from "@/components/chat/ChatButton"
 import ChatTab from "@/components/chat/ChatTab"
 import NavBar from "@/components/NavBar"
 import Network from "@/components/network/Network"
@@ -23,7 +23,7 @@ export default function Home() {
         <NavBar />
         <div className="relative flex-1">
           <ReactFlowProvider>
-            <Network />
+            <Network chatOpen={chatOpen} />
           </ReactFlowProvider>
           <ChatTab
             handleChatTopBarClick={handleChatTopBarClick}
@@ -32,7 +32,7 @@ export default function Home() {
         </div>
       </div>
 
-      <ChatPill handleClick={handleChatPillClick} />
+      <ChatButton handleClick={handleChatPillClick} />
     </>
   )
 }

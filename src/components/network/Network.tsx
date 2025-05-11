@@ -45,8 +45,8 @@ const initialNodes: NetworkNodeType[] = allNodes.filter(
 
 const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
 
-function Network() {
-  const { setCenter, fitView } = useReactFlow<NetworkNodeType, Edge>()
+function Network({ chatOpen }: { chatOpen: boolean }) {
+  const { fitView } = useReactFlow<NetworkNodeType, Edge>()
 
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NetworkNodeType>(initialNodes)
@@ -110,15 +110,24 @@ function Network() {
     setNodes([...nextNodes])
   }
 
+  // Update edges when nodes change
   useEffect(() => {
     setEdges(getEdgesFromNodes(nodes))
   }, [nodes, setEdges])
 
+  // Fit view to nodes when they change
   useEffect(() => {
     if (nodes.length > 0) {
       fitView({ duration: 300, padding: 0.1 })
     }
   }, [nodes, fitView])
+
+  // Stop simulation when chat is open
+  useEffect(() => {
+    if (running && chatOpen) {
+      stop()
+    }
+  }, [chatOpen])
 
   const nodeTypes = useMemo(
     () => ({
