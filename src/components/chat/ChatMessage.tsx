@@ -9,7 +9,7 @@ export default function ChatMessage({
 }) {
   return (
     <div
-      className={`${type == "Chat" ? "self-start bg-gradient-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-gradient-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[26px] p-[3px]`}
+      className={`${type == "Chat" ? "self-start bg-linear-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-linear-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[26px] p-[3px]`}
     >
       <div className={`flex items-center gap-3 rounded-3xl bg-white px-4 py-3`}>
         {type == "Chat" && (
@@ -22,7 +22,7 @@ export default function ChatMessage({
         )}
         <div className="flex-1">
           <div
-            className={`${type == "User" ? "text-right" : "text-left"} font-sourceSans3 font-medium text-gray-800`}
+            className={`${type == "User" ? "text-right" : "text-left"} font-medium text-gray-800`}
           >
             {message}
           </div>

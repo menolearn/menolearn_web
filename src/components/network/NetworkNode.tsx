@@ -9,7 +9,7 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
   const Icon = data.icon
   return (
     <>
-      <div className="grid max-w-xs justify-items-start rounded-3xl border-4 border-nodeBorder bg-nodeBg px-6 py-3 text-center">
+      <div className="border-node-border bg-node-bg grid max-w-xs justify-items-start rounded-3xl border-4 px-6 py-3 text-center">
         <div className="flex items-center justify-center gap-2">
           {" "}
           {Icon && <Icon className="h-6 w-6 text-black" />}

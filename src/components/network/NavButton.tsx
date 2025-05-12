@@ -12,7 +12,7 @@ export default function NavButton({
   return (
     <button
       onClick={onClick}
-      className="bg-nodeBg border-nodeBorder flex items-center gap-2 rounded-3xl border-4 px-5 py-3 text-lg font-semibold"
+      className="bg-node-bg border-node-border flex cursor-pointer items-center gap-2 rounded-3xl border-4 px-5 py-3 text-lg font-semibold"
     >
       {iconPlacement == "left" && icon}
       {label}
