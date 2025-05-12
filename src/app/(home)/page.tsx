@@ -18,9 +18,10 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div>
       <div className="flex h-screen flex-col">
         <NavBar />
+
         <div className="relative flex-1">
           <ReactFlowProvider>
             <Network chatOpen={chatOpen} />
@@ -31,8 +32,7 @@ export default function Home() {
           />
         </div>
       </div>
-
       <ChatButton handleClick={handleChatPillClick} />
-    </>
+    </div>
   )
 }

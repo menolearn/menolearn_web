@@ -175,22 +175,26 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
           {running ? "Stop Simulation" : "Start Simulation"}
         </button>
       </Panel>
-      <Panel position="bottom-left">
-        <NavButton
-          label="Back"
-          onClick={goBack}
-          icon={<ArrowLeft />}
-          iconPlacement="left"
-        />
-      </Panel>
-      <Panel position="bottom-right">
-        <NavButton
-          label="Next"
-          onClick={goNext}
-          icon={<ArrowRight />}
-          iconPlacement="right"
-        />
-      </Panel>
+      {history.length > 0 && (
+        <Panel position="bottom-left">
+          <NavButton
+            label="Back"
+            onClick={goBack}
+            icon={<ArrowLeft />}
+            iconPlacement="left"
+          />
+        </Panel>
+      )}
+      {redoStack.length > 0 && (
+        <Panel position="bottom-right">
+          <NavButton
+            label="Next"
+            onClick={goNext}
+            icon={<ArrowRight />}
+            iconPlacement="right"
+          />
+        </Panel>
+      )}
       <Background color="#808080" variant={BackgroundVariant.Dots} />
     </ReactFlow>
   )
