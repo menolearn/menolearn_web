@@ -26,7 +26,7 @@ export const allNodes: NetworkNodeType[] = [
       label: "What Is Menopause?",
       category: NodeCategory.initial,
     },
-    position: { x: 400, y: 100 },
+    position: { x: 0, y: 0 },
     connectsTo: ["1a", "1b", "1c", "1d"],
   },
   {
@@ -37,7 +37,7 @@ export const allNodes: NetworkNodeType[] = [
       category: NodeCategory.initial,
       icon: iconDict["relief"],
     },
-    position: { x: 100, y: 300 },
+    position: { x: -100, y: 100 },
     connectsTo: ["2a", "2b"],
   },
   {

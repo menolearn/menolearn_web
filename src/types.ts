@@ -35,6 +35,8 @@ export type NetworkNodeType = Node<NetworkNodeData, "network"> & {
   fy?: number
   x?: number
   y?: number
+  vx?: number
+  vy?: number
 }
 
 export interface DragEvents {

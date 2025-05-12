@@ -71,7 +71,7 @@ export function useLayoutedElements() {
           .strength(0.02),
       )
       .force("charge", forceManyBody().strength(-800))
-      .force("x", forceX().x(0).strength(0.03))
+      .force("x", forceX().x(0).strength(0.02))
       .force("y", forceY().y(0).strength(0.05))
       .force("collide", collide() as any)
       .alphaTarget(0.05)
@@ -93,7 +93,6 @@ export function useLayoutedElements() {
         }
       })
       setNodes(updated)
-      fitView({ duration: 30, padding: 0.1 })
     })
 
     simRef.current = sim
@@ -116,10 +115,18 @@ export function useLayoutedElements() {
   // controls
   const start = () => {
     if (simRef.current && !runningRef.current) {
+      const freshNodes = getNodes().map((n) => ({
+        ...n,
+        x: n.position.x,
+        y: n.position.y,
+      }))
+
+      simRef.current.nodes(freshNodes)
       simRef.current.alpha(0.05).restart()
       setRunning(true)
     }
   }
+
   const stop = () => {
     if (simRef.current && runningRef.current) {
       simRef.current.stop()

@@ -1,11 +1,13 @@
 import { quadtree, Quadtree } from "d3-quadtree"
 
 interface Node {
-  x: number
-  y: number
+  x: number // top-left X
+  y: number // top-left Y
   vx?: number
   vy?: number
   measured: { width: number; height: number }
+  cx?: number // center X
+  cy?: number // center Y
 }
 
 type ForceFunction = {
@@ -16,69 +18,87 @@ type ForceFunction = {
 export function collide(): ForceFunction {
   let nodes: Node[] = []
 
-  const force: ForceFunction = ((alpha: number) => {
+  const force = ((alpha: number) => {
+    if (nodes.length === 0) return
+
+    // 1) compute true centers
+    for (const n of nodes) {
+      n.cx = n.x + n.measured.width / 2
+      n.cy = n.y + n.measured.height / 2
+    }
+
+    // 2) build quadtree on centers
     const tree: Quadtree<Node> = quadtree(
       nodes,
-      (d) => d.x,
-      (d) => d.y
+      (d) => d.cx!,
+      (d) => d.cy!,
     )
 
+    // 3) collision pass on centers
     for (const node of nodes) {
-      const halfWidth = node.measured.width / 2
-      const halfHeight = node.measured.height / 2
-      const nx1 = node.x - halfWidth
-      const nx2 = node.x + halfWidth
-      const ny1 = node.y - halfHeight
-      const ny2 = node.y + halfHeight
+      const hw = node.measured.width / 2 + 10
+      const hh = node.measured.height / 2 + 10
+      const xMin = node.cx! - hw
+      const xMax = node.cx! + hw
+      const yMin = node.cy! - hh
+      const yMax = node.cy! + hh
 
       tree.visit((quad, x1, y1, x2, y2) => {
+        // skip non-overlapping quadrants
+        if (x2 < xMin || x1 > xMax || y2 < yMin || y1 > yMax) {
+          return true
+        }
         if (!quad.length) {
-          let q: typeof quad | undefined = quad
-          do {
-            if (q?.data && q.data !== node) {
-              const other = q.data
-              const otherHalfWidth = other.measured.width / 2
-              const otherHalfHeight = other.measured.height / 2
+          let q: typeof quad | null = quad
+          while (q) {
+            const other = q.data
+            if (other && other !== node) {
+              const ohw = other.measured.width / 2 + 10
+              const ohh = other.measured.height / 2 + 10
 
-              if (
-                node.x - halfWidth < other.x + otherHalfWidth &&
-                node.x + halfWidth > other.x - otherHalfWidth &&
-                node.y - halfHeight < other.y + otherHalfHeight &&
-                node.y + halfHeight > other.y - otherHalfHeight
-              ) {
-                // Compute overlap
-                const dx = node.x - other.x || 0.01
-                const dy = node.y - other.y || 0.01
-                const absDx = Math.abs(dx)
-                const absDy = Math.abs(dy)
+              // edge-to-edge overlap on centers
+              const overlapX =
+                Math.min(xMax, other.cx! + ohw) -
+                Math.max(xMin, other.cx! - ohw)
+              const overlapY =
+                Math.min(yMax, other.cy! + ohh) -
+                Math.max(yMin, other.cy! - ohh)
 
-                const overlapX = halfWidth + otherHalfWidth - absDx
-                const overlapY = halfHeight + otherHalfHeight - absDy
+              if (overlapX > 0 && overlapY > 0) {
+                const dx = node.cx! - other.cx! || 0.01
+                const dy = node.cy! - other.cy! || 0.01
 
-                if (overlapX > 0 && overlapY > 0) {
-                  if (overlapX < overlapY) {
-                    // Resolve along x-axis
-                    const shift = overlapX * alpha
-                    node.x += dx > 0 ? shift : -shift
-                    other.x -= dx > 0 ? shift : -shift
-                  } else {
-                    // Resolve along y-axis
-                    const shift = overlapY * alpha
-                    node.y += dy > 0 ? shift : -shift
-                    other.y -= dy > 0 ? shift : -shift
-                  }
+                if (overlapX < overlapY) {
+                  const shift = (overlapX * alpha) / 2
+                  node.cx! += dx > 0 ? shift : -shift
+                  other.cx! -= dx > 0 ? shift : -shift
+                } else {
+                  const shift = (overlapY * alpha) / 2
+                  node.cy! += dy > 0 ? shift : -shift
+                  other.cy! -= dy > 0 ? shift : -shift
                 }
               }
             }
-          } while ((q = q.next))
+            q = q.next as any
+          }
         }
-        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1
+        return false
       })
+    }
+
+    // 4) write centers back to top-left positions
+    for (const n of nodes) {
+      n.x = n.cx! - n.measured.width / 2
+      n.y = n.cy! - n.measured.height / 2
     }
   }) as ForceFunction
 
   force.initialize = (newNodes: Node[]) => {
     nodes = newNodes
+    for (const n of nodes) {
+      n.cx = n.x + n.measured.width / 2
+      n.cy = n.y + n.measured.height / 2
+    }
   }
 
   return force

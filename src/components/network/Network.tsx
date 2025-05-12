@@ -15,7 +15,7 @@ import "@xyflow/react/dist/style.css"
 
 import { allNodes } from "@/data/nodes"
 import { NetworkNodeType, NodeCategory } from "@/types"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import NetworkNode from "./NetworkNode"
 import NavButton from "./NavButton"
 import { ArrowLeft, ArrowRight } from "lucide-react"
@@ -39,11 +39,48 @@ const getEdgesFromNodes = (nodes: NetworkNodeType[]): Edge[] => {
   })
 }
 
+const estimateChildrenX = (newNodes: NetworkNodeType[], gap: number) => {
+  const totalSpacing = (newNodes.length - 1) * gap
+  const estimatedWidths = newNodes.map((n) => {
+    const est = n.data.label.length * 16
+    if (est > 320) {
+      return 320 + 48
+    } else {
+      return est + 48
+    }
+  }) // Estimate width by characters and padding
+  const totalChildrenWidth = estimatedWidths.reduce(
+    (acc, curr) => acc + curr,
+    0,
+  )
+  return [totalChildrenWidth + totalSpacing, estimatedWidths] as const
+}
+
 const initialNodes: NetworkNodeType[] = allNodes.filter(
   (node) => node.data.category == NodeCategory.initial,
 )
+const initChildren = initialNodes.filter((x) => x.id != "1")
+
+const newY = 150 // Make children below parent
+const childrenGap = 30
+
+const estimateX = estimateChildrenX(initChildren, childrenGap)
+const totalRowWidth = estimateX[0]
+let newX = (250 - totalRowWidth) / 2
+
+for (let i = 0; i < initChildren.length; i++) {
+  const newNode = initChildren[i]
+  newNode.position.y = newY
+  newNode.position.x = newX
+
+  newX += estimateX[1][i] + childrenGap
+}
 
 const initialEdges: Edge[] = getEdgesFromNodes(initialNodes)
+
+const nodeTypes = {
+  network: NetworkNode,
+}
 
 function Network({ chatOpen }: { chatOpen: boolean }) {
   const { fitView } = useReactFlow<NetworkNodeType, Edge>()
@@ -72,20 +109,9 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
 
     const newY = clickedPosition.y + 150 // Make children below parent
     const childrenGap = 30
-    const totalSpacing = (newNodes.length - 1) * childrenGap
-    const estimatedWidths = newNodes.map((n) => {
-      const est = n.data.label.length * 16
-      if (est > 320) {
-        return 320 + 48
-      } else {
-        return est + 48
-      }
-    }) // Estimate width by characters and padding
-    const totalChildrenWidth = estimatedWidths.reduce(
-      (acc, curr) => acc + curr,
-      0,
-    )
-    const totalRowWidth = totalChildrenWidth + totalSpacing
+
+    const estimateX = estimateChildrenX(newNodes, childrenGap)
+    const totalRowWidth = estimateX[0]
     let newX = clickedPosition.x + (node.measured!.width! - totalRowWidth) / 2
 
     for (let i = 0; i < newNodes.length; i++) {
@@ -93,13 +119,14 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
       newNode.position.y = newY
       newNode.position.x = newX
 
-      newX += estimatedWidths[i] + childrenGap
+      newX += estimateX[1][i] + childrenGap
     }
 
     // Get new edges and add new nodes and edges to state. Save old nodes
     const oldNodes = nodes
 
     setNodes([node as NetworkNodeType, ...newNodes])
+    setEdges(getEdgesFromNodes([node as NetworkNodeType, ...newNodes]))
 
     // Update history
     setHistory((prev) => [...prev, oldNodes])
@@ -120,6 +147,7 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
 
     // Update current network
     setNodes([...lastNodes])
+    setEdges(getEdgesFromNodes(lastNodes))
   }
 
   // Next button
@@ -136,17 +164,15 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
 
     // Update current network
     setNodes([...nextNodes])
+    setEdges(getEdgesFromNodes(nextNodes))
   }
-
-  // Update edges when nodes change
-  useEffect(() => {
-    setEdges(getEdgesFromNodes(nodes))
-  }, [nodes, setEdges])
 
   // Fit view to nodes when they change
   useEffect(() => {
-    if (nodes.length > 0) {
-      fitView({ duration: 300, padding: 0.1 })
+    if (nodes.length > 0 && !running) {
+      fitView({ duration: 200, padding: 0.1 })
+    } else if (nodes.length > 0 && running) {
+      fitView({ duration: 30, padding: 0.1 })
     }
   }, [nodes, fitView])
 
@@ -156,13 +182,6 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
       stop()
     }
   }, [chatOpen])
-
-  const nodeTypes = useMemo(
-    () => ({
-      network: (props: any) => <NetworkNode {...props} />,
-    }),
-    [],
-  )
 
   return (
     <ReactFlow
