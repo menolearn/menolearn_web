@@ -17,19 +17,23 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div className="flex h-screen flex-col">
-        <div className="relative flex-1">
-          <ReactFlowProvider>
-            <Network chatOpen={chatOpen} />
-          </ReactFlowProvider>
-          <ChatTab
-            handleChatTopBarClick={handleChatTopBarClick}
-            open={chatOpen}
-          />
-        </div>
+    <>
+      <div
+        className="relative flex h-screen flex-col"
+        style={{ height: "calc(100vh - 4rem)" }}
+      >
+        <ReactFlowProvider>
+          <Network chatOpen={chatOpen} />
+        </ReactFlowProvider>
+
+        <ChatTab
+          handleChatTopBarClick={handleChatTopBarClick}
+          open={chatOpen}
+        />
       </div>
-      <ChatButton handleClick={handleChatPillClick} />
-    </div>
+      <div className="fixed bottom-4 left-1/2 z-10 -translate-x-1/2">
+        <ChatButton handleClick={handleChatPillClick} />
+      </div>
+    </>
   )
 }

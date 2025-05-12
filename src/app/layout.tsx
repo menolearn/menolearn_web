@@ -30,10 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${sourceSans3.variable} font-poppins antialiased`}
+        className={`${poppins.variable} ${sourceSans3.variable} min-h-screen font-poppins antialiased`}
       >
         <NavBar />
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   )
