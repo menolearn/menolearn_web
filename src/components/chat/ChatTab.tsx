@@ -32,7 +32,7 @@ export default function ChatTab({
       style={{
         background: "radial-gradient(ellipse at top, #F4F1FF 0%, #DAEFFF 100%)",
       }}
-      className={`font-sourceSans3 absolute inset-0 ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
+      className={`font-source-sans3 absolute inset-0 ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
     >
       <div
         className="flex items-center justify-center border-b-2 border-b-[#CDCAD6] hover:cursor-pointer"

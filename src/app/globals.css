@@ -1,15 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-node-bg: #D9EEFB;
+  --color-node-border: #7FB0CD;
+
+  --font-poppins: var(--font-poppins), sans-serif;
+  --font-source-sans3: var(--font-source-sans3), sans-serif;
+}
+
 
 html,
 body {
   margin: 0;
   font-family: sans-serif;
   box-sizing: border-box;
-}
-
-:root {
-  --color-node-bg: #D9EEFB;
-  --color-node-border: #7FB0CD
 }
