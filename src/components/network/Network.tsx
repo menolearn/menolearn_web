@@ -73,7 +73,14 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     const newY = clickedPosition.y + 150 // Make children below parent
     const childrenGap = 30
     const totalSpacing = (newNodes.length - 1) * childrenGap
-    const estimatedWidths = newNodes.map((n) => n.data.label.length * 16 + 48) // Estimate width by characters and padding
+    const estimatedWidths = newNodes.map((n) => {
+      const est = n.data.label.length * 16
+      if (est > 320) {
+        return 320 + 48
+      } else {
+        return est + 48
+      }
+    }) // Estimate width by characters and padding
     const totalChildrenWidth = estimatedWidths.reduce(
       (acc, curr) => acc + curr,
       0,

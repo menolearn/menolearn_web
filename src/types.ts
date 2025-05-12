@@ -9,6 +9,15 @@ export enum NodeCategory {
   pharma = "pharm",
   alternative = "alt",
   hrt = "hrt",
+  otherNovelHormonal = "otherNovelHormonal",
+  nonHormonal = "nonHormonal",
+  therapy = "therapy",
+  cbt = "cbt",
+  lifestyle = "lifestyle",
+  supplemental = "supplemental",
+  mentalHealth = "mentalHealth",
+  vasomotor = "vasomotor",
+  genitourinary = "genitourinary",
 }
 
 type NetworkNodeData = {

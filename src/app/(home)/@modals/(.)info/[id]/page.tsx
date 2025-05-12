@@ -14,7 +14,7 @@ export default async function NodeDescriptionModal({
   return (
     <ModalOverlay>
       <div className="flex flex-col items-center gap-4">
-        <div className="rounded-xl bg-white px-6 py-3">
+        <div className="max-w-xs rounded-xl bg-white px-6 py-3">
           <p className="text-center text-xl font-bold">{node.data.label}</p>
         </div>
         <div className="max-w-sm rounded-xl bg-white px-6 py-4 font-medium">
