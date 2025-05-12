@@ -29,10 +29,10 @@ export default function ChatTab({
 
   return (
     <div
-      style={{
-        background: "radial-gradient(ellipse at top, #F4F1FF 0%, #DAEFFF 100%)",
-      }}
-      className={`font-source-sans3 absolute inset-0 ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
+      // style={{
+      //   background: "radial-gradient(ellipse at top, #F4F1FF 0%, #DAEFFF 100%)",
+      // }}
+      className={`font-source-sans3 absolute inset-0 bg-radial-[at_50%_75%] from-[#F4F1FF] to-[#DAEFFF] ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
     >
       <div
         className="flex items-center justify-center border-b-2 border-b-[#CDCAD6] hover:cursor-pointer"
