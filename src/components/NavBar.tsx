@@ -6,7 +6,9 @@ export default function NavBar() {
         <img src="/logo.svg" alt="Menolearn Logo" width={50} height={50} />
         <div className="text-xl font-bold">Menolearn</div>
       </div>
-      <Menu className="hover:cursor-pointer" />
+      <button>
+        <Menu />
+      </button>
     </div>
   )
 }

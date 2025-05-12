@@ -1,4 +1,4 @@
-import ModalOverlay from "@/components/modals/Modal"
+import ModalOverlay from "@/components/modals/ModalOverlay"
 import { allNodes } from "@/data/nodes"
 
 export default async function NodeDescriptionModal({

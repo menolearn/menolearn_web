@@ -1,10 +1,10 @@
 "use client"
-import { CircleArrowUp } from "lucide-react"
 import { useState } from "react"
 
 import Image from "next/image"
 import ChatMessage from "./ChatMessage"
 import ChatPill from "./ChatPill"
+import ChatInput from "./ChatInput"
 
 export default function ChatTab({
   handleChatTopBarClick,
@@ -13,6 +13,15 @@ export default function ChatTab({
   handleChatTopBarClick: () => void
   open: boolean
 }) {
+  const [suggestions, setSuggestions] = useState<string[]>([
+    "Common treatments for menopause",
+    "What is HRT",
+    "Common treatments for menopause",
+    "What is HRT",
+    "Common treatments for menopause",
+    "What is HRT",
+  ])
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log("submit")
@@ -47,32 +56,13 @@ export default function ChatTab({
           </div>
           <div className="grid gap-4">
             <div className="w-full overflow-x-auto">
-              <div className="flex gap-4">
-                <ChatPill text="Common treatments for menopause" />
-                <ChatPill text="Common treatments for menopause" />
-                <ChatPill text="Common treatments for menopause" />
-                <ChatPill text="Common treatments for menopause" />
-                <ChatPill text="Common treatments for menopause" />
-                <ChatPill text="Common treatments for menopause" />
+              <div className="flex items-center gap-4">
+                {suggestions.map((s, idx) => (
+                  <ChatPill text={s} key={idx} />
+                ))}
               </div>
             </div>
-            <form
-              className="flex items-end rounded-3xl border-2 border-black px-4 py-2"
-              onSubmit={handleSubmit}
-            >
-              <textarea
-                placeholder="Ask a question"
-                rows={1}
-                className="w-full resize-none overflow-hidden bg-transparent outline-none"
-                onInput={(e) => {
-                  e.currentTarget.style.height = "auto"
-                  e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`
-                }}
-              />
-              <button type="submit" className="ml-2">
-                <CircleArrowUp />
-              </button>
-            </form>
+            <ChatInput handleSubmit={handleSubmit} />
           </div>
         </div>
       )}

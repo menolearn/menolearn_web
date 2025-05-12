@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Poppins, Source_Sans_3 } from "next/font/google"
 import "./globals.css"
+import NavBar from "@/components/NavBar"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${sourceSans3.variable} font-poppins antialiased`}
       >
+        <NavBar />
         {children}
       </body>
     </html>
