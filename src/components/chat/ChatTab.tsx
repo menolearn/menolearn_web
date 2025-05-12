@@ -1,10 +1,12 @@
 "use client"
-import { useState } from "react"
+import { useState, useActionState } from "react"
 
 import Image from "next/image"
 import ChatMessage from "./ChatMessage"
 import ChatPill from "./ChatPill"
 import ChatInput from "./ChatInput"
+
+import submitToOpenAI from "@/app/actions"
 
 export default function ChatTab({
   handleChatTopBarClick,
@@ -21,17 +23,11 @@ export default function ChatTab({
     "Common treatments for menopause",
     "What is HRT",
   ])
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log("submit")
-  }
+  const [result, formAction] = useActionState(submitToOpenAI, null)
+  console.log(result)
 
   return (
     <div
-      // style={{
-      //   background: "radial-gradient(ellipse at top, #F4F1FF 0%, #DAEFFF 100%)",
-      // }}
       className={`font-source-sans3 absolute inset-0 bg-radial-[at_50%_75%] from-[#F4F1FF] to-[#DAEFFF] ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
     >
       <div
@@ -62,7 +58,7 @@ export default function ChatTab({
                 ))}
               </div>
             </div>
-            <ChatInput handleSubmit={handleSubmit} />
+            <ChatInput submitAction={formAction} />
           </div>
         </div>
       )}
