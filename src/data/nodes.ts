@@ -9,7 +9,7 @@ import {
   Leaf,
 } from "lucide-react"
 
-export const iconDict = {
+const iconDict = {
   ["question"]: CircleHelp,
   ["quiz"]: FileQuestion,
   ["support"]: Handshake,

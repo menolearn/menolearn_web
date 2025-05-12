@@ -68,6 +68,27 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     )
     if (newNodes.length == 0) return
 
+    const clickedPosition = node.position
+
+    const newY = clickedPosition.y + 150 // Make children below parent
+    const childrenGap = 30
+    const totalSpacing = (newNodes.length - 1) * childrenGap
+    const estimatedWidths = newNodes.map((n) => n.data.label.length * 16 + 48) // Estimate width by characters and padding
+    const totalChildrenWidth = estimatedWidths.reduce(
+      (acc, curr) => acc + curr,
+      0,
+    )
+    const totalRowWidth = totalChildrenWidth + totalSpacing
+    let newX = clickedPosition.x + (node.measured!.width! - totalRowWidth) / 2
+
+    for (let i = 0; i < newNodes.length; i++) {
+      const newNode = newNodes[i]
+      newNode.position.y = newY
+      newNode.position.x = newX
+
+      newX += estimatedWidths[i] + childrenGap
+    }
+
     // Get new edges and add new nodes and edges to state. Save old nodes
     const oldNodes = nodes
 
