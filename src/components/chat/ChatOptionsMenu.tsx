@@ -22,7 +22,7 @@ export default function ChatOptionsMenu() {
   return (
     <div className="relative" ref={menuRef}>
       <button
-        className={`flex items-center justify-center transition-all duration-500 ease-in-out ${
+        className={`flex cursor-pointer items-center justify-center transition-all duration-500 ease-in-out ${
           open ? "rotate-180" : ""
         }`}
         onClick={() => setOpen((prev) => !prev)}
