@@ -81,7 +81,9 @@ export default function ChatTab({
 
   return (
     <div
-      className={`font-source-sans3 absolute inset-0 bg-radial-[at_50%_25%] from-[#F4F1FF] from-40% to-[#DAEFFF] ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
+      className={`font-source-sans3 fixed top-[4rem] right-0 bottom-0 left-0 z-20 flex flex-col overflow-hidden rounded-t-3xl bg-radial-[at_50%_25%] from-[#F4F1FF] from-40% to-[#DAEFFF] transition-transform duration-300 ease-in-out ${
+        open ? "translate-y-0" : "translate-y-full"
+      }`}
     >
       <div
         className="flex items-center justify-center border-b-2 border-b-[#CDCAD6] hover:cursor-pointer"
