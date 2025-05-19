@@ -26,7 +26,14 @@ type NetworkNodeData = {
   >
   label: string
   category: NodeCategory
-  description?: string
+  description?: Partial<NodeDescription>
+}
+
+interface NodeDescription {
+  generic: string
+  vasomotor: string
+  genitourinary: string
+  mentalHealth: string
 }
 
 export type NetworkNodeType = Node<NetworkNodeData, "network"> & {

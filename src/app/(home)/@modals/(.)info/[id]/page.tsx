@@ -18,7 +18,7 @@ export default async function NodeDescriptionModal({
           <p className="text-center text-xl font-bold">{node.data.label}</p>
         </div>
         <div className="max-w-sm rounded-xl bg-white px-6 py-4 font-medium">
-          {node.data.description}
+          {node.data.description?.generic}
         </div>
       </div>
     </ModalOverlay>
