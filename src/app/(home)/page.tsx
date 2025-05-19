@@ -20,7 +20,7 @@ export default function Home() {
     <>
       <div
         className="relative flex h-full flex-col"
-        style={{ height: "calc(100vh - 4rem)" }}
+        style={{ height: "calc(100dvh - 4rem)" }}
       >
         <div className="h-full w-full">
           <ReactFlowProvider>
