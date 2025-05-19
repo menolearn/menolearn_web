@@ -23,7 +23,7 @@ export function useLayoutedElements() {
   const simRef = useRef<Simulation<NetworkNodeType, undefined> | null>(null)
 
   // your running flag and a ref that always mirrors it
-  const [running, setRunning] = useState(true)
+  const [running, setRunning] = useState(false)
   const runningRef = useRef(running)
   useEffect(() => {
     runningRef.current = running
