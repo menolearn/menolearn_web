@@ -195,6 +195,7 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onNodeClick={onNodeClick}
+      minZoom={0.01}
       fitView
     >
       <Panel position="top-left">
