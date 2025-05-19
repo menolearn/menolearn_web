@@ -1,11 +1,9 @@
 import { Handle, NodeProps, Position } from "@xyflow/react"
 import { NetworkNodeType } from "@/types"
-import { useState } from "react"
 import { ChevronDown } from "lucide-react"
 import Link from "next/link"
 
 export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
-  // const [expanded, setExpanded] = useState(false)
   const Icon = data.icon
   return (
     <>
@@ -20,26 +18,12 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
               scroll={false}
               onClick={(e) => {
                 e.stopPropagation()
-                // setExpanded(!expanded)
               }}
-              // className={`transition-all duration-500 ease-in-out ${
-              //   expanded ? "rotate-180" : ""
-              // }`}
             >
               <ChevronDown />
             </Link>
           ) : null}
         </div>
-
-        {/* <div
-          className={`text-left transition-all duration-500 ease-in-out ${
-            expanded
-              ? "mt-2 max-h-[500px] scale-100 opacity-100"
-              : "max-h-0 scale-95 opacity-0"
-          }`}
-        >
-          {expanded && <p>{data.description}</p>}
-        </div> */}
       </div>
       <Handle
         type="target"

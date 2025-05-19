@@ -1,5 +1,11 @@
 "use client"
-import { useState, useActionState, useEffect, useRef } from "react"
+import {
+  useState,
+  useActionState,
+  useEffect,
+  useRef,
+  useTransition,
+} from "react"
 
 import Image from "next/image"
 import ChatMessage from "./ChatMessage"
@@ -25,15 +31,20 @@ export default function ChatTab({
   const [suggestions, setSuggestions] = useState<string[]>([
     "Common treatments for menopause",
     "What is HRT",
-    "Common treatments for menopause",
-    "What is HRT",
+    "How can hormone therapy help with menopause",
+    "What is progesterone",
     "Common treatments for menopause",
     "What is HRT",
   ])
   const [input, setInput] = useState("")
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([])
-  const [result, formAction] = useActionState(submitToOpenAI, null)
+  const [result, formAction, formSubmitPending] = useActionState(
+    submitToOpenAI,
+    null,
+  )
+  const [isPending, startTransition] = useTransition()
 
+  // Detect formAction results
   useEffect(() => {
     if (result && result[0].type == "output_text") {
       setChatHistory((prev) => [
@@ -43,6 +54,7 @@ export default function ChatTab({
     }
   }, [result])
 
+  // Scrolling
   const bottomRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -51,9 +63,27 @@ export default function ChatTab({
 
   console.log(chatHistory)
 
+  // Suggestion clicks
+  const handleSuggestionClick = (text: string) => {
+    const formData = new FormData()
+    formData.append("prompt", text)
+
+    setChatHistory((prev) => [...prev, { type: "User", message: text }])
+
+    startTransition(async () => {
+      const res = await submitToOpenAI(undefined, formData)
+      if (res && res[0].type == "output_text") {
+        setChatHistory((prev) => [
+          ...prev,
+          { type: "Chat", message: (res[0] as ResponseOutputText).text },
+        ])
+      }
+    })
+  }
+
   return (
     <div
-      className={`font-source-sans3 absolute inset-0 bg-radial-[at_50%_75%] from-[#F4F1FF] to-[#DAEFFF] ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
+      className={`font-source-sans3 absolute inset-0 bg-radial-[at_50%_25%] from-[#F4F1FF] from-40% to-[#DAEFFF] ${open ? "translate-y-0" : "translate-y-full"} z-20 flex flex-col overflow-hidden rounded-t-3xl transition-all duration-300 ease-in-out`}
     >
       <div
         className="flex items-center justify-center border-b-2 border-b-[#CDCAD6] hover:cursor-pointer"
@@ -83,9 +113,13 @@ export default function ChatTab({
           </div>
           <div className="mt-4 grid gap-4">
             <div className="w-full overflow-x-auto">
-              <div className="flex items-center gap-4">
+              <div className="flex items-stretch gap-4">
                 {suggestions.map((s, idx) => (
-                  <ChatPill text={s} key={idx} />
+                  <ChatPill
+                    text={s}
+                    key={idx}
+                    onClick={() => handleSuggestionClick(s)}
+                  />
                 ))}
               </div>
             </div>
