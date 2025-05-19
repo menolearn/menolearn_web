@@ -8,7 +8,7 @@ export default async function submitToOpenAI(_prev: any, formData: FormData) {
   console.log("action called")
   const prompt = formData.get("prompt")?.toString() || ""
 
-  if (!prompt) return null
+  if (!prompt || prompt.length > 1000) return null
 
   // return sample object
   return [

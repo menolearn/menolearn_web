@@ -1,6 +1,6 @@
 import { Handle, NodeProps, Position } from "@xyflow/react"
 import { NetworkNodeType } from "@/types"
-import { ChevronDown } from "lucide-react"
+import { Info } from "lucide-react"
 import Link from "next/link"
 
 export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
@@ -20,7 +20,7 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
                 e.stopPropagation()
               }}
             >
-              <ChevronDown />
+              <Info />
             </Link>
           ) : null}
         </div>
