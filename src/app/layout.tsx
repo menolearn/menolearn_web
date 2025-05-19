@@ -41,7 +41,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`font-poppins min-h-screen antialiased`}>
+      <body className={`font-poppins antialiased`}>
         <NavBar />
         <main>{children}</main>
       </body>
