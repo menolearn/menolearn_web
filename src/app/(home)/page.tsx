@@ -22,9 +22,11 @@ export default function Home() {
         className="relative flex h-full flex-col"
         style={{ height: "calc(100vh - 4rem)" }}
       >
-        <ReactFlowProvider>
-          <Network chatOpen={chatOpen} />
-        </ReactFlowProvider>
+        <div className="h-full w-full">
+          <ReactFlowProvider>
+            <Network chatOpen={chatOpen} />
+          </ReactFlowProvider>
+        </div>
         <ChatTab
           handleChatTopBarClick={handleChatTopBarClick}
           open={chatOpen}
