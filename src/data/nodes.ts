@@ -685,6 +685,10 @@ const vasomotorNodes: NetworkNodeType[] = [
     data: {
       label: "Hot Flashes",
       category: NodeCategory.vasomotor,
+      description: {
+        generic:
+          "Characterized by sudden feelings of heat, sweating, and flushing, often followed by chills. They result from changes in thermoregulation due to declining estrogen levels.",
+      },
     },
     position: { x: -300, y: 500 },
     connectsTo: [],
@@ -695,6 +699,10 @@ const vasomotorNodes: NetworkNodeType[] = [
     data: {
       label: "Sweating",
       category: NodeCategory.vasomotor,
+      description: {
+        generic:
+          "Sweating, especially night sweats, is a common vasomotor symptom of menopause. It involves sudden, intense perspiration that can disrupt sleep and is linked to changes in thermoregulation due to declining estrogen levels.",
+      },
     },
     position: { x: -300, y: 500 },
     connectsTo: [],
@@ -705,6 +713,10 @@ const vasomotorNodes: NetworkNodeType[] = [
     data: {
       label: "Blood Pressure (Hypertension)",
       category: NodeCategory.vasomotor,
+      description: {
+        generic:
+          "Blood pressure changes can occur during menopause which can affect vascular function and stress response. This may increase the risk of hypertension in some women, highlighting the importance of monitoring and maintaining cardiovascular health during menopause.",
+      },
     },
     position: { x: -300, y: 500 },
     connectsTo: [],
@@ -715,6 +727,10 @@ const vasomotorNodes: NetworkNodeType[] = [
     data: {
       label: "Tachycardia",
       category: NodeCategory.vasomotor,
+      description: {
+        generic:
+          "Rapid heart rate can occur during menopause due to hormonal fluctuations,  which can affect the autonomic nervous system and cardiovascular function. These changes may cause palpitations or a sensation of a racing heart.",
+      },
     },
     position: { x: -300, y: 500 },
     connectsTo: [],
