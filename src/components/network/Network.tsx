@@ -104,12 +104,14 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     )
     if (newNodes.length == 0) return
 
-    const newY = rootNode.position.y + 150 // Make children below parent
+    const referencePos = running ? rootNode.position : node.position
+
+    const newY = referencePos.y + 150 // Make children below parent
     const childrenGap = 30
 
     const estimateX = estimateChildrenX(newNodes, childrenGap)
     const totalRowWidth = estimateX[0]
-    let newX = rootNode.position.x + (node.measured!.width! - totalRowWidth) / 2
+    let newX = referencePos.x + (node.measured!.width! - totalRowWidth) / 2
 
     for (let i = 0; i < newNodes.length; i++) {
       const newNode = newNodes[i]
@@ -122,11 +124,18 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     // Get new edges and add new nodes and edges to state. Save old nodes
     const oldNodes = nodes
 
-    const newRoot = { ...node, position: rootNode.position } as NetworkNodeType
+    if (running) {
+      const newRoot = {
+        ...node,
+        position: rootNode.position,
+      } as NetworkNodeType
 
-    setRootNode(newRoot)
+      setRootNode(newRoot)
+      setNodes([newRoot as NetworkNodeType, ...newNodes])
+    } else {
+      setNodes([node as NetworkNodeType, ...newNodes])
+    }
 
-    setNodes([newRoot, ...newNodes])
     setEdges(getEdgesFromNodes([node as NetworkNodeType, ...newNodes]))
 
     // Update history
@@ -171,7 +180,7 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
   // Fit view to nodes when they change
   useEffect(() => {
     if (nodes.length > 0 && !running) {
-      fitView({ duration: 200, padding: 0.1 })
+      fitView({ duration: 250, padding: 0.1 })
     } else if (nodes.length > 0 && running) {
       fitView({ duration: 30, padding: 0.1 })
     }
