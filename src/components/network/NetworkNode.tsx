@@ -20,7 +20,7 @@ export default function NetworkNode({ id, data }: NodeProps<NetworkNodeType>) {
                 e.stopPropagation()
               }}
             >
-              <Info />
+              <Info height={26} width={26} />
             </Link>
           ) : null}
         </div>

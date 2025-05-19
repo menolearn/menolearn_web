@@ -253,7 +253,7 @@ const symptomNodes: NetworkNodeType[] = [
       },
     },
     position: { x: 400, y: 300 },
-    connectsTo: [],
+    connectsTo: ["16a", "16b", "16c", "16d", "16e", "16f", "16g"],
   },
 ]
 
@@ -753,6 +753,83 @@ const genitourinaryNodes: NetworkNodeType[] = [
   },
 ]
 
+const otherSymptomsNodes: NetworkNodeType[] = [
+  {
+    id: "16a",
+    type: "network",
+    data: {
+      label: "Hair Loss",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16b",
+    type: "network",
+    data: {
+      label: "Menstrual Issues",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16c",
+    type: "network",
+    data: {
+      label: "Breast Tenderness",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16d",
+    type: "network",
+    data: {
+      label: "Headaches",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16e",
+    type: "network",
+    data: {
+      label: "Sexual Function / Libido Issues",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16f",
+    type: "network",
+    data: {
+      label: "Sleep-Related Issues",
+      category: NodeCategory.otherSymptoms,
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+  {
+    id: "16g",
+    type: "network",
+    data: {
+      label: "Gastrointestinal Issues",
+      category: NodeCategory.otherSymptoms,
+      description: {
+        generic:
+          "While some women report GI symptoms during the menopausal transition, these symptoms are not commonly recognized as direct indications for menopause-speciifc therapies. Therefore, MHT is not typically prescribed for managing menopausal GI issues. If you are experiencing GI symptoms during menopause, it's advisable to consult a healthcare professional to explore appropriate diagnostic evaluations and treatment options tailored to your specific needs.",
+      },
+    },
+    position: { x: -300, y: 500 },
+    connectsTo: [],
+  },
+]
+
 export const allNodes: NetworkNodeType[] = [
   ...initialNodes,
   ...treatmentNodes,
@@ -769,4 +846,5 @@ export const allNodes: NetworkNodeType[] = [
   ...mentalHealthNodes,
   ...vasomotorNodes,
   ...genitourinaryNodes,
+  ...otherSymptomsNodes,
 ]

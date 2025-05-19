@@ -18,6 +18,7 @@ export enum NodeCategory {
   mentalHealth = "mentalHealth",
   vasomotor = "vasomotor",
   genitourinary = "genitourinary",
+  otherSymptoms = "otherSymptoms",
 }
 
 type NetworkNodeData = {

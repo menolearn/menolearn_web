@@ -59,6 +59,7 @@ const estimateChildrenX = (newNodes: NetworkNodeType[], gap: number) => {
 const initialNodes: NetworkNodeType[] = allNodes.filter(
   (node) => node.data.category == NodeCategory.initial,
 )
+const initialRoot = initialNodes.find((x) => x.id == "1")!
 const initChildren = initialNodes.filter((x) => x.id != "1")
 
 const newY = 150 // Make children below parent
@@ -84,9 +85,9 @@ const nodeTypes = {
 
 function Network({ chatOpen }: { chatOpen: boolean }) {
   const { fitView } = useReactFlow<NetworkNodeType, Edge>()
-
   const [nodes, setNodes, onNodesChange] =
     useNodesState<NetworkNodeType>(initialNodes)
+  const [rootNode, setRootNode] = useState<NetworkNodeType>(initialRoot)
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>(initialEdges)
   const [history, setHistory] = useState<NetworkNodeType[][]>([])
   const [redoStack, setRedoStack] = useState<NetworkNodeType[][]>([])
@@ -103,14 +104,12 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     )
     if (newNodes.length == 0) return
 
-    const clickedPosition = node.position
-
-    const newY = clickedPosition.y + 150 // Make children below parent
+    const newY = rootNode.position.y + 150 // Make children below parent
     const childrenGap = 30
 
     const estimateX = estimateChildrenX(newNodes, childrenGap)
     const totalRowWidth = estimateX[0]
-    let newX = clickedPosition.x + (node.measured!.width! - totalRowWidth) / 2
+    let newX = rootNode.position.x + (node.measured!.width! - totalRowWidth) / 2
 
     for (let i = 0; i < newNodes.length; i++) {
       const newNode = newNodes[i]
@@ -123,7 +122,10 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     // Get new edges and add new nodes and edges to state. Save old nodes
     const oldNodes = nodes
 
-    setNodes([node as NetworkNodeType, ...newNodes])
+    setNodes([
+      { ...node, position: rootNode.position } as NetworkNodeType,
+      ...newNodes,
+    ])
     setEdges(getEdgesFromNodes([node as NetworkNodeType, ...newNodes]))
 
     // Update history

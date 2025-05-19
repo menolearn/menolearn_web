@@ -67,7 +67,7 @@ export function useLayoutedElements() {
         "link",
         forceLink(edges)
           .id((d: any) => d.id)
-          .distance(200)
+          .distance(250)
           .strength(0.02),
       )
       .force("charge", forceManyBody().strength(-800))
