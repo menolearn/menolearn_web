@@ -26,11 +26,11 @@ export default function Home() {
           <ReactFlowProvider>
             <Network chatOpen={chatOpen} />
           </ReactFlowProvider>
+          <ChatTab
+            handleChatTopBarClick={handleChatTopBarClick}
+            open={chatOpen}
+          />
         </div>
-        <ChatTab
-          handleChatTopBarClick={handleChatTopBarClick}
-          open={chatOpen}
-        />
       </div>
       <div className="fixed bottom-4 left-1/2 z-10 -translate-x-1/2">
         <ChatButton handleClick={handleChatPillClick} />
