@@ -3,7 +3,6 @@ import {
   BriefcaseMedical,
   CircleHelp,
   FileQuestion,
-  Flame,
   HandHeart,
   Handshake,
   Leaf,

@@ -122,10 +122,11 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     // Get new edges and add new nodes and edges to state. Save old nodes
     const oldNodes = nodes
 
-    setNodes([
-      { ...node, position: rootNode.position } as NetworkNodeType,
-      ...newNodes,
-    ])
+    const newRoot = { ...node, position: rootNode.position } as NetworkNodeType
+
+    setRootNode(newRoot)
+
+    setNodes([newRoot, ...newNodes])
     setEdges(getEdgesFromNodes([node as NetworkNodeType, ...newNodes]))
 
     // Update history
@@ -181,7 +182,7 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
     if (running && chatOpen) {
       stop()
     }
-  }, [chatOpen])
+  }, [chatOpen, running])
 
   return (
     <ReactFlow
