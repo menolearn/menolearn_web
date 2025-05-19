@@ -61,8 +61,6 @@ export default function ChatTab({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [chatHistory])
 
-  console.log(chatHistory)
-
   // Suggestion clicks
   const handleSuggestionClick = (text: string) => {
     const formData = new FormData()

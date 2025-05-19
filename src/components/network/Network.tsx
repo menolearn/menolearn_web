@@ -94,8 +94,6 @@ function Network({ chatOpen }: { chatOpen: boolean }) {
   const { dragEvents, start, stop, running } = useLayoutedElements()
 
   const onNodeClick: NodeMouseHandler = (_, node) => {
-    console.log("node clicked", node)
-
     // Get immediate children of clicked node
     const existingNodeIds = new Set(nodes.map((n) => n.id))
     const newNodes = allNodes.filter(

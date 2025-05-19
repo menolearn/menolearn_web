@@ -5,7 +5,7 @@ import OpenAI from "openai"
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
 
 export default async function submitToOpenAI(_prev: any, formData: FormData) {
-  console.log("action called")
+  // console.log("action called")
   const prompt = formData.get("prompt")?.toString() || ""
 
   if (!prompt || prompt.length > 1000) return null

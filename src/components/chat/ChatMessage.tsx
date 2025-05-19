@@ -9,7 +9,7 @@ export default function ChatMessage({
 }) {
   return (
     <div
-      className={`${type == "Chat" ? "self-start bg-linear-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-linear-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[26px] p-[3px]`}
+      className={`${type == "Chat" ? "self-start bg-linear-to-b from-[#D1DBE3] to-[#91BBD5]" : "self-end bg-linear-to-t from-[#D9D1DE] to-[#AC91D5]"} rounded-[26px] p-[3px] shadow-md`}
     >
       <div className={`flex items-start gap-3 rounded-3xl bg-white px-4 py-3`}>
         {type == "Chat" && (
